@@ -1,5 +1,5 @@
 <?php
-require_once "CurlClass.php"; // ðâáîòà ñ curl
+require_once "CurlClass.php"; // Ñ€Ð²Ð±Ð¾Ñ‚Ð° Ñ curl
 
 class Http extends CurlClass
 {
@@ -23,12 +23,12 @@ class Http extends CurlClass
         $server = ($ssl ? 'https://' : 'http://').$pref.self::$apiURL;
         $link =	$server.($method ? "/$method":"");
 
-        // ïðèâîäèì ëèíê â íîðìó
+        // Ð¿Ñ€Ð¸Ð²Ð¾Ð´Ð¸Ð¼ Ð»Ð¸Ð½Ðº Ð² Ð½Ð¾Ñ€Ð¼Ñƒ
         $link=str_replace("amp;","",$link);
 
-        // ñîõðàíÿåì
-        //file_put_contents("C:/WebServers/home/test1.ru/www/httpCall/call".$this->bot_id.".txt",date("d.m.Y H:i:s")."  ñòðîêà ".__LINE__.". proxy : ".$this->proxy." çàïðîñ  $link \r\n",FILE_APPEND | LOCK_EX);
-        //if($params['postdata']) file_put_contents("C:/WebServers/home/test1.ru/www/httpCall/call".$this->bot_id.".txt",date("d.m.Y H:i:s")."  ñòðîêà ".__LINE__.". ïàðàìåòðû \r\n".var_export($params['postdata'],true)." \r\n",FILE_APPEND | LOCK_EX);
+        // ÑÐ¾Ñ…Ñ€Ð°Ð½ÑÐµÐ¼
+        //file_put_contents("C:/WebServers/home/test1.ru/www/httpCall/call".$this->bot_id.".txt",date("d.m.Y H:i:s")."  ÑÑ‚Ñ€Ð¾ÐºÐ° ".__LINE__.". proxy : ".$this->proxy." Ð·Ð°Ð¿Ñ€Ð¾Ñ  $link \r\n",FILE_APPEND | LOCK_EX);
+        //if($params['postdata']) file_put_contents("C:/WebServers/home/test1.ru/www/httpCall/call".$this->bot_id.".txt",date("d.m.Y H:i:s")."  ÑÑ‚Ñ€Ð¾ÐºÐ° ".__LINE__.". Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ \r\n".var_export($params['postdata'],true)." \r\n",FILE_APPEND | LOCK_EX);
 
 
         $result = $this->SendRequest(array('url' => $link, 'header' => $params['headers'], 'postdata' => $params['postdata'] , 'dump' => $dump,'reloc' => $reloc));
@@ -38,7 +38,7 @@ class Http extends CurlClass
         {
             $this->lastPageHtml = $result['html'];
 
-            // ïðîâåðêà íà áëîêèðîâêó
+            // Ð¿Ñ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð½Ð° Ð±Ð»Ð¾ÐºÐ¸Ñ€Ð¾Ð²ÐºÑƒ
             if(strpos($result['lasturl'],'blocked')>0)
             {
                 $result['code']=2;
@@ -46,19 +46,19 @@ class Http extends CurlClass
                 $result['status']=false;
             }
 
-            // ïðîâðêà íà ðàçìåð äàííûõ êàê ïðèçíàê ïëîõîé ïðîêñè
+            // Ð¿Ñ€Ð¾Ð²Ñ€ÐºÐ° Ð½Ð° Ñ€Ð°Ð·Ð¼ÐµÑ€ Ð´Ð°Ð½Ð½Ñ‹Ñ… ÐºÐ°Ðº Ð¿Ñ€Ð¸Ð·Ð½Ð°Ðº Ð¿Ð»Ð¾Ñ…Ð¾Ð¹ Ð¿Ñ€Ð¾ÐºÑÐ¸
 
             $length = $this->parser->parseStrAll($result['header'], 'Content-Length: ','C');
 
-            // file_put_contents("packet.txt",date("d.m.Y H:i:s").". ñòðîêà ".__LINE__.var_export($length,true)."  äëèíà7 ïàêåòà â çàãîëîâêå: ".trim(array_pop($length[html]))." äëèíà äàííûõ õòìë: ".strlen($result['html'])."\r\n çàãîëîâîê:\r\n".$result['header']." ////////////////////////////////////////// \r\n  \r\n ",FILE_APPEND | LOCK_EX);
+            // file_put_contents("packet.txt",date("d.m.Y H:i:s").". ÑÑ‚Ñ€Ð¾ÐºÐ° ".__LINE__.var_export($length,true)."  Ð´Ð»Ð¸Ð½Ð°7 Ð¿Ð°ÐºÐµÑ‚Ð° Ð² Ð·Ð°Ð³Ð¾Ð»Ð¾Ð²ÐºÐµ: ".trim(array_pop($length[html]))." Ð´Ð»Ð¸Ð½Ð° Ð´Ð°Ð½Ð½Ñ‹Ñ… Ñ…Ñ‚Ð¼Ð»: ".strlen($result['html'])."\r\n Ð·Ð°Ð³Ð¾Ð»Ð¾Ð²Ð¾Ðº:\r\n".$result['header']." ////////////////////////////////////////// \r\n  \r\n ",FILE_APPEND | LOCK_EX);
 
-            // ïîëó÷àåì äàííûå î äëèíå ïàêåòà èç çàãàëîâêà
+            // Ð¿Ð¾Ð»ÑƒÑ‡Ð°ÐµÐ¼ Ð´Ð°Ð½Ð½Ñ‹Ðµ Ð¾ Ð´Ð»Ð¸Ð½Ðµ Ð¿Ð°ÐºÐµÑ‚Ð° Ð¸Ð· Ð·Ð°Ð³Ð°Ð»Ð¾Ð²ÐºÐ°
             $head_pack_len=trim(array_pop($length[html]));
 
-            // ñðàâíèâàåì äëèíó ïàêåòà èç ïîñëåäåíãî çàãîëîâêà è äëèíó ïîëó÷åíûõ äàííûõ äëÿ ïðîâåðêè êà÷åñòâà ïðîêñè
+            // ÑÑ€Ð°Ð²Ð½Ð¸Ð²Ð°ÐµÐ¼ Ð´Ð»Ð¸Ð½Ñƒ Ð¿Ð°ÐºÐµÑ‚Ð° Ð¸Ð· Ð¿Ð¾ÑÐ»ÐµÐ´ÐµÐ½Ð³Ð¾ Ð·Ð°Ð³Ð¾Ð»Ð¾Ð²ÐºÐ° Ð¸ Ð´Ð»Ð¸Ð½Ñƒ Ð¿Ð¾Ð»ÑƒÑ‡ÐµÐ½Ñ‹Ñ… Ð´Ð°Ð½Ð½Ñ‹Ñ… Ð´Ð»Ñ Ð¿Ñ€Ð¾Ð²ÐµÑ€ÐºÐ¸ ÐºÐ°Ñ‡ÐµÑÑ‚Ð²Ð° Ð¿Ñ€Ð¾ÐºÑÐ¸
             if($head_pack_len> strlen($result['html']))
             {
-                // file_put_contents("packetHTML".$this->bot_id.".txt",date("d.m.Y H:i:s").". ñòðîêà ".__LINE__."  äëèíà ïàêåòà â çàãîëîâêå: ".$head_pack_len." äëèíà äàííûõ õòìë: ".strlen($result['html'])."\r\n çàãîëîâîê:\r\n".$result['header']." \r\n òåëî:\r\n".$result['html']." \r\n ////////////////////////////////////////// \r\n  \r\n ",FILE_APPEND | LOCK_EX);
+                // file_put_contents("packetHTML".$this->bot_id.".txt",date("d.m.Y H:i:s").". ÑÑ‚Ñ€Ð¾ÐºÐ° ".__LINE__."  Ð´Ð»Ð¸Ð½Ð° Ð¿Ð°ÐºÐµÑ‚Ð° Ð² Ð·Ð°Ð³Ð¾Ð»Ð¾Ð²ÐºÐµ: ".$head_pack_len." Ð´Ð»Ð¸Ð½Ð° Ð´Ð°Ð½Ð½Ñ‹Ñ… Ñ…Ñ‚Ð¼Ð»: ".strlen($result['html'])."\r\n Ð·Ð°Ð³Ð¾Ð»Ð¾Ð²Ð¾Ðº:\r\n".$result['header']." \r\n Ñ‚ÐµÐ»Ð¾:\r\n".$result['html']." \r\n ////////////////////////////////////////// \r\n  \r\n ",FILE_APPEND | LOCK_EX);
                 return array('status' => false ,'code' => 1, 'msg' => "connect_error");
             }
         }

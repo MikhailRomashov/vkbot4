@@ -6,22 +6,22 @@ class Repost extends VK_functions_abstract implements VK_functions_interface
     //function repost($link)
     public function doit(string $Method,array $RequestParam,array $PostData,array $CurlData,array $DebugOptions)
     {
-        /// ó÷åò êîëè÷åñòâà çàïóñêà ôóíêöèè äëÿ âû÷åñëåíèå ñðåäíåãî ÷èñëà êàï÷ íà 1 çàïóùåíóþ ôóíêöèþ
+        /// ÑƒÑ‡ÐµÑ‚ ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð° Ð·Ð°Ð¿ÑƒÑÐºÐ° Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸ Ð´Ð»Ñ Ð²Ñ‹Ñ‡ÐµÑÐ»ÐµÐ½Ð¸Ðµ ÑÑ€ÐµÐ´Ð½ÐµÐ³Ð¾ Ñ‡Ð¸ÑÐ»Ð° ÐºÐ°Ð¿Ñ‡ Ð½Ð° 1 Ð·Ð°Ð¿ÑƒÑ‰ÐµÐ½ÑƒÑŽ Ñ„ÑƒÐ½ÐºÑ†Ð¸ÑŽ
         $this->Captcha->action++;
-        // èçâëåêàåì object
+        // Ð¸Ð·Ð²Ð»ÐµÐºÐ°ÐµÐ¼ object
         $object = $this->Parser->parseStr($Method, 'object=','&');
         if($object[status])
         {
-            // êîððåêòèðóåì ëèíê ñðàçó äî ðàáî÷åãî âèäà
+            // ÐºÐ¾Ñ€Ñ€ÐµÐºÑ‚Ð¸Ñ€ÑƒÐµÐ¼ Ð»Ð¸Ð½Ðº ÑÑ€Ð°Ð·Ñƒ Ð´Ð¾ Ñ€Ð°Ð±Ð¾Ñ‡ÐµÐ³Ð¾ Ð²Ð¸Ð´Ð°
             $postdata['object']=$object[html];
 
-            // óäàëÿåì ëèøíèé & â êîíöå
+            // ÑƒÐ´Ð°Ð»ÑÐµÐ¼ Ð»Ð¸ÑˆÐ½Ð¸Ð¹ & Ð² ÐºÐ¾Ð½Ñ†Ðµ
             $Method=substr($Method, 0, -1);
 
-            // çàìåíÿåì object=wall íà post_from=
+            // Ð·Ð°Ð¼ÐµÐ½ÑÐµÐ¼ object=wall Ð½Ð° post_from=
             $Method= str_replace("object=wall", "post_from=", $Method);
 
-            // çàìåíÿåì
+            // Ð·Ð°Ð¼ÐµÐ½ÑÐµÐ¼
             $Method= str_replace("&amp;", "&", $Method);
 
             $final_link="like?act=add_repost&to=".$this->bot_vk_id."&from_publish=1".$Method;
@@ -35,49 +35,49 @@ class Repost extends VK_functions_abstract implements VK_functions_interface
 
                 if($cap_zavis>0)
                 {
-                    // ÑÁÐÀÑÛÂÀÅì   ïðè ïîâòîðíîì çàïðîñê
-                    // äåëàåì ïðîâåðêó íà îøèáêó ðàñïîçíàâàíèÿ
+                    // Ð¡Ð‘Ð ÐÐ¡Ð«Ð’ÐÐ•Ð¼   Ð¿Ñ€Ð¸ Ð¿Ð¾Ð²Ñ‚Ð¾Ñ€Ð½Ð¾Ð¼ Ð·Ð°Ð¿Ñ€Ð¾ÑÐº
+                    // Ð´ÐµÐ»Ð°ÐµÐ¼ Ð¿Ñ€Ð¾Ð²ÐµÑ€ÐºÑƒ Ð½Ð° Ð¾ÑˆÐ¸Ð±ÐºÑƒ Ñ€Ð°ÑÐ¿Ð¾Ð·Ð½Ð°Ð²Ð°Ð½Ð¸Ñ
                     $captcha_form[status] = false;
                     $captcha_form[params][name][1] = '';
                     $captcha_form[params][value][1] = '';
                 }
 
-                // äåëàåì ïðîâåðêó íà êàï÷ó
-                //  ðàçáèðàåì íà ôîðìû
+                // Ð´ÐµÐ»Ð°ÐµÐ¼ Ð¿Ñ€Ð¾Ð²ÐµÑ€ÐºÑƒ Ð½Ð° ÐºÐ°Ð¿Ñ‡Ñƒ
+                //  Ñ€Ð°Ð·Ð±Ð¸Ñ€Ð°ÐµÐ¼ Ð½Ð° Ñ„Ð¾Ñ€Ð¼Ñ‹
                 $captcha_form = $this->Parser->getParamAll($html['html']);
 
-                // êàï÷à íå îáíàðóæåíà, óñïåøíûé ðåïîñò
+                // ÐºÐ°Ð¿Ñ‡Ð° Ð½Ðµ Ð¾Ð±Ð½Ð°Ñ€ÑƒÐ¶ÐµÐ½Ð°, ÑƒÑÐ¿ÐµÑˆÐ½Ñ‹Ð¹ Ñ€ÐµÐ¿Ð¾ÑÑ‚
                 if(!$captcha_form[status])
                 {
-                    // åñëè ïåðåä ýòèì áûëà îáðàáîòàíà êàï÷à òî ó÷èòûâàåì ýòî
+                    // ÐµÑÐ»Ð¸ Ð¿ÐµÑ€ÐµÐ´ ÑÑ‚Ð¸Ð¼ Ð±Ñ‹Ð»Ð° Ð¾Ð±Ñ€Ð°Ð±Ð¾Ñ‚Ð°Ð½Ð° ÐºÐ°Ð¿Ñ‡Ð° Ñ‚Ð¾ ÑƒÑ‡Ð¸Ñ‚Ñ‹Ð²Ð°ÐµÐ¼ ÑÑ‚Ð¾
                     if($cap_zavis)
                     {
-                        // ïðîâðÿåì ñèòóàöèþ êîãäà áîò ðàáîòàåò áåç òåëåôîíà ñ ïðîôèäå ñ ïîñòîÿííûìè êàï÷àìè
+                        // Ð¿Ñ€Ð¾Ð²Ñ€ÑÐµÐ¼ ÑÐ¸Ñ‚ÑƒÐ°Ñ†Ð¸ÑŽ ÐºÐ¾Ð³Ð´Ð° Ð±Ð¾Ñ‚ Ñ€Ð°Ð±Ð¾Ñ‚Ð°ÐµÑ‚ Ð±ÐµÐ· Ñ‚ÐµÐ»ÐµÑ„Ð¾Ð½Ð° Ñ Ð¿Ñ€Ð¾Ñ„Ð¸Ð´Ðµ Ñ Ð¿Ð¾ÑÑ‚Ð¾ÑÐ½Ð½Ñ‹Ð¼Ð¸ ÐºÐ°Ð¿Ñ‡Ð°Ð¼Ð¸
                         if($this->Captcha->TooMuchCaptchaReaction())
                         {
-                            $this->Log->save("ChangePhone", __LINE__ ,". çàïðîñîâ êàï÷è:" . $this->Captcha->captcha . ". âûïîëíåíî ôóíêöèé " . $this->Captcha->action . " \r\n");
+                            $this->Log->save("ChangePhone", __LINE__ ,". Ð·Ð°Ð¿Ñ€Ð¾ÑÐ¾Ð² ÐºÐ°Ð¿Ñ‡Ð¸:" . $this->Captcha->captcha . ". Ð²Ñ‹Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¾ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¹ " . $this->Captcha->action . " \r\n");
                             return array('status' => false, 'code' => 3, 'msg' => "change_phone");
                         }
                     }
 
-                    // èíà÷å ñ÷èòàåì ðåïîñò óñïåøíûì
+                    // Ð¸Ð½Ð°Ñ‡Ðµ ÑÑ‡Ð¸Ñ‚Ð°ÐµÐ¼ Ñ€ÐµÐ¿Ð¾ÑÑ‚ ÑƒÑÐ¿ÐµÑˆÐ½Ñ‹Ð¼
                     return array('status' => true, 'code' => 50, 'msg' => "success_repost");
                 }
 
 
                 if ($captcha_form[params][name][1] == 'captcha_sid')
                 {
-                    // ïðè ïîâòîðíîì çàïðîñå êàï÷è
+                    // Ð¿Ñ€Ð¸ Ð¿Ð¾Ð²Ñ‚Ð¾Ñ€Ð½Ð¾Ð¼ Ð·Ð°Ð¿Ñ€Ð¾ÑÐµ ÐºÐ°Ð¿Ñ‡Ð¸
                     if($cap_zavis>0)
                     {
                         $this->Captcha->reportbad($captcha_id);
 
-                        $this->Log->save("RepostCapErr", __LINE__, " îøèáêà ðàñïî÷íàíèÿ êàï÷è ïðè ðåïîñòå. Ôîðìà:\r\n" . var_export($captcha_form, true) . " \r\n postdata:\r\n" . var_export($postdata, true) . " \r\n");
+                        $this->Log->save("RepostCapErr", __LINE__, " Ð¾ÑˆÐ¸Ð±ÐºÐ° Ñ€Ð°ÑÐ¿Ð¾Ñ‡Ð½Ð°Ð½Ð¸Ñ ÐºÐ°Ð¿Ñ‡Ð¸ Ð¿Ñ€Ð¸ Ñ€ÐµÐ¿Ð¾ÑÑ‚Ðµ. Ð¤Ð¾Ñ€Ð¼Ð°:\r\n" . var_export($captcha_form, true) . " \r\n postdata:\r\n" . var_export($postdata, true) . " \r\n");
 
 
                     }
 
-                    // !!! ïðîâåðèòü ïðàâèëüíîñòü îðàáîòêè êàï÷è, ñðàâíèòü ñ êëàññîì frending
+                    // !!! Ð¿Ñ€Ð¾Ð²ÐµÑ€Ð¸Ñ‚ÑŒ Ð¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð¾ÑÑ‚ÑŒ Ð¾Ñ€Ð°Ð±Ð¾Ñ‚ÐºÐ¸ ÐºÐ°Ð¿Ñ‡Ð¸, ÑÑ€Ð°Ð²Ð½Ð¸Ñ‚ÑŒ Ñ ÐºÐ»Ð°ÑÑÐ¾Ð¼ frending
                     $postdata[$captcha_form[params][name][1]] = $captcha_form[params][value][1];
                     $postdata[$captcha_form[params][name][2]] = $captcha_form[params][value][2];
 
@@ -88,18 +88,18 @@ class Repost extends VK_functions_abstract implements VK_functions_interface
 
                     if ($captcha_key == false)
                     {
-                        // ñêîðåå âñåãî ïðîáëåìà ñ ïðîêñè. ñòàâèì ïðèçíàê
-                        $this->Services->reboot(1); // ïåðåçàïóñê áîòà
+                        // ÑÐºÐ¾Ñ€ÐµÐµ Ð²ÑÐµÐ³Ð¾ Ð¿Ñ€Ð¾Ð±Ð»ÐµÐ¼Ð° Ñ Ð¿Ñ€Ð¾ÐºÑÐ¸. ÑÑ‚Ð°Ð²Ð¸Ð¼ Ð¿Ñ€Ð¸Ð·Ð½Ð°Ðº
+                        $this->Services->reboot(1); // Ð¿ÐµÑ€ÐµÐ·Ð°Ð¿ÑƒÑÐº Ð±Ð¾Ñ‚Ð°
                     }
 
-                    // âîçìîæíî íàäî if ($captcha_form[params][name][2] == 'captcha_key')
+                    // Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ Ð½Ð°Ð´Ð¾ if ($captcha_form[params][name][2] == 'captcha_key')
                     if ($captcha_form[params][name][3] == 'captcha_key')
                     {
-                        // âîçìîæíî íàäî $postdata[$captcha_form[params][name][2]] = $captcha_key;
+                        // Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ Ð½Ð°Ð´Ð¾ $postdata[$captcha_form[params][name][2]] = $captcha_key;
                         $postdata[$captcha_form[params][name][3]] = $captcha_key;
                     }
 
-                    $this->Log->save("CAPlogRepost",__LINE__," Êàï÷à ïðè çàÿâêå â äðóçüÿ. Ôîðìà:\r\n".var_export($captcha_form,true)." \r\n postdata:\r\n".var_export($postdata,true));
+                    $this->Log->save("CAPlogRepost",__LINE__," ÐšÐ°Ð¿Ñ‡Ð° Ð¿Ñ€Ð¸ Ð·Ð°ÑÐ²ÐºÐµ Ð² Ð´Ñ€ÑƒÐ·ÑŒÑ. Ð¤Ð¾Ñ€Ð¼Ð°:\r\n".var_export($captcha_form,true)." \r\n postdata:\r\n".var_export($postdata,true));
 
                 }
                 else
@@ -109,26 +109,26 @@ class Repost extends VK_functions_abstract implements VK_functions_interface
 
                     if ($captcha_form[params][name][0] == 'phone')
                     {
-                        //ïðîâåðêà íà áëîêèðîâêè áîòà
+                        //Ð¿Ñ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð½Ð° Ð±Ð»Ð¾ÐºÐ¸Ñ€Ð¾Ð²ÐºÐ¸ Ð±Ð¾Ñ‚Ð°
                         return array('status' => false, 'code' => 2, 'msg' => "login_error");
                     }
                     else
                     {
-                        // íåïîíÿòíàÿ ñèòóàöÿ, ëîãèðóåì
+                        // Ð½ÐµÐ¿Ð¾Ð½ÑÑ‚Ð½Ð°Ñ ÑÐ¸Ñ‚ÑƒÐ°Ñ†Ñ, Ð»Ð¾Ð³Ð¸Ñ€ÑƒÐµÐ¼
                         $this->Log->save("CAPlogRepost" , __LINE__," final_link $final_link \r\n" . var_export($postdata, true) . "\r\n" . var_export($captcha_form, true) . "\r\n" . var_export($html, true) . "\r\n");
                         die;
                     }
                 }
             }while($cap_zavis<3);
 
-            // ïðîèçîøëî çàâèñàíèå ïðè ðàñïîçíàâàíèè êàï÷è. óáèâàåì ñêðèïò áîòà
-            $this->Log->save("FrAddCapErr", __LINE__, " çàâèñ ïðè ðàñïîçíàíèè êàï÷è cap_zavis=$cap_zavis \r\n");
+            // Ð¿Ñ€Ð¾Ð¸Ð·Ð¾ÑˆÐ»Ð¾ Ð·Ð°Ð²Ð¸ÑÐ°Ð½Ð¸Ðµ Ð¿Ñ€Ð¸ Ñ€Ð°ÑÐ¿Ð¾Ð·Ð½Ð°Ð²Ð°Ð½Ð¸Ð¸ ÐºÐ°Ð¿Ñ‡Ð¸. ÑƒÐ±Ð¸Ð²Ð°ÐµÐ¼ ÑÐºÑ€Ð¸Ð¿Ñ‚ Ð±Ð¾Ñ‚Ð°
+            $this->Log->save("FrAddCapErr", __LINE__, " Ð·Ð°Ð²Ð¸Ñ Ð¿Ñ€Ð¸ Ñ€Ð°ÑÐ¿Ð¾Ð·Ð½Ð°Ð½Ð¸Ð¸ ÐºÐ°Ð¿Ñ‡Ð¸ cap_zavis=$cap_zavis \r\n");
             die;
 
         }
         else
         {
-            $this->Log->save("ErrParsing",__LINE__," \r\n ïàðñèëñÿ ëèíê $Method ðåçóëüòàò ïàðñèíãà :\r\n". var_export($object,true). " \r\n");
+            $this->Log->save("ErrParsing",__LINE__," \r\n Ð¿Ð°Ñ€ÑÐ¸Ð»ÑÑ Ð»Ð¸Ð½Ðº $Method Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚ Ð¿Ð°Ñ€ÑÐ¸Ð½Ð³Ð° :\r\n". var_export($object,true). " \r\n");
             return array('status' => false ,'code' => 14, 'msg' => 'parsing_error') ;
         }
     }

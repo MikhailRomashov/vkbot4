@@ -5,7 +5,7 @@ class Search extends VK_functions_abstract implements VK_functions_interface
 {
 
 ///////////////////////
-// ïîèñê ëþäåé
+// Ð¿Ð¾Ð¸ÑÐº Ð»ÑŽÐ´ÐµÐ¹
 ////////////////////////
 //function search( $country=0,$city=0, $section='people',$online=true,$photo=1,$offset=0,$detail_level=0)
     public function doit(string $Method,
@@ -20,14 +20,14 @@ class Search extends VK_functions_abstract implements VK_functions_interface
         $friends_vkid       = array();
         $friends_short_link = array();
 
-        // ïàðàìåòðû èñîëüçóåòñÿ îäíîêðàòíî, íî âîçìîæíî ïîòðåáóåòñÿ èñïîëüçîâàòü ÷àùå
+        // Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ Ð¸ÑÐ¾Ð»ÑŒÐ·ÑƒÐµÑ‚ÑÑ Ð¾Ð´Ð½Ð¾ÐºÑ€Ð°Ñ‚Ð½Ð¾, Ð½Ð¾ Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ Ð¿Ð¾Ñ‚Ñ€ÐµÐ±ÑƒÐµÑ‚ÑÑ Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÑŒ Ñ‡Ð°Ñ‰Ðµ
         $country       =$RequestParam['country']  ?? 0;
         $city          =$RequestParam['city']     ?? 0;
         $section       =$RequestParam['section']  ?? 'people';
         $online        =$RequestParam['online']   ?? true;
         $photo         =$RequestParam['photo']    ?? 1;
 
-        // ïàðàìåòðû èñîëüçóåòñÿ íåîäíîêðàòíî
+        // Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ Ð¸ÑÐ¾Ð»ÑŒÐ·ÑƒÐµÑ‚ÑÑ Ð½ÐµÐ¾Ð´Ð½Ð¾ÐºÑ€Ð°Ñ‚Ð½Ð¾
         $offset        =$RequestParam['offset']       ?? 0;
         $detail_level  =$RequestParam['detail_level'] ?? 0;
 
@@ -42,7 +42,7 @@ class Search extends VK_functions_abstract implements VK_functions_interface
             $data[detail_level]=$detail_level;
             $data[offset]=$offset;
 
-            // ïðàìåòðû çàïðîñà
+            // Ð¿Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñ‹ Ð·Ð°Ð¿Ñ€Ð¾ÑÐ°
             if($country) 	$param .= "c[country]=$country&";
             if($city) 	    $param .= "c[city]=$city&";
             if($offset) 	$param .= "offset=$offset&";
@@ -56,10 +56,10 @@ class Search extends VK_functions_abstract implements VK_functions_interface
                 {
                     $month=rand(1,12);
 
-                    // îïðåäåëÿåì ñïèñîê äëèííûõ ìåñÿöåû
+                    // Ð¾Ð¿Ñ€ÐµÐ´ÐµÐ»ÑÐµÐ¼ ÑÐ¿Ð¸ÑÐ¾Ðº Ð´Ð»Ð¸Ð½Ð½Ñ‹Ñ… Ð¼ÐµÑÑÑ†ÐµÑ‹
                     $long_month=array(1,3,5,7,8,10,12);
 
-                    // ïðîâåðÿåì âûïàë ëè äëÿííûé ìåñÿö
+                    // Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ Ð²Ñ‹Ð¿Ð°Ð» Ð»Ð¸ Ð´Ð»ÑÐ½Ð½Ñ‹Ð¹ Ð¼ÐµÑÑÑ†
                     if(in_array($month,$long_month))
                     {
                         $day=rand(1,31);
@@ -84,14 +84,14 @@ class Search extends VK_functions_abstract implements VK_functions_interface
 
             if($detail_level>=3)
             {
-                // ãîä ðîæäåíèÿ
+                // Ð³Ð¾Ð´ Ñ€Ð¾Ð¶Ð´ÐµÐ½Ð¸Ñ
                 if(!$byear) $byear=rand(1960,2005);
                 $param .= "c[byear]=$byear&";
             }
 
             if($detail_level>=4)
             {
-                // cåìåéíîå ïîëîæåíèå
+                // cÐµÐ¼ÐµÐ¹Ð½Ð¾Ðµ Ð¿Ð¾Ð»Ð¾Ð¶ÐµÐ½Ð¸Ðµ
                 if(!$cstatus) $cstatus=rand(1,8);
                 $param .= "c[status]=$cstatus&";
             }
@@ -99,26 +99,26 @@ class Search extends VK_functions_abstract implements VK_functions_interface
 
             if($detail_level>=5)
             {
-                // ïîë
+                // Ð¿Ð¾Ð»
                 if(!$csex) $csex=rand(1,2);
                 $param .= "c[sex]=$csex&";
             }
 
 
-            // óäàëÿåì êîíöåâîé àìïåðñàíä
+            // ÑƒÐ´Ð°Ð»ÑÐµÐ¼ ÐºÐ¾Ð½Ñ†ÐµÐ²Ð¾Ð¹ Ð°Ð¼Ð¿ÐµÑ€ÑÐ°Ð½Ð´
             $param=substr($param, 0, -1);
 
-            // îòêðûâåì ñòðàíèöó ñ ðåçóëüòàòàìè ïîèñêà
+            // Ð¾Ñ‚ÐºÑ€Ñ‹Ð²ÐµÐ¼ ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ñƒ Ñ Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ð°Ð¼Ð¸ Ð¿Ð¾Ð¸ÑÐºÐ°
             $html=$this->Call->httpCall('search'.($param ? "?$param":""),$PostData, $CurlData, $DebugOptions);
 
-            // íàõîäèì êîëè÷åñòâî ðåçóëòàòîâ ïîèñêà
+            // Ð½Ð°Ñ…Ð¾Ð´Ð¸Ð¼ ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ñ€ÐµÐ·ÑƒÐ»Ñ‚Ð°Ñ‚Ð¾Ð² Ð¿Ð¾Ð¸ÑÐºÐ°
             if($html[status])
             {
 
                 $search_res_kol=null;
 
 
-                // óáåæäàåìñÿ ÷òî ñòàíèöà ïîëó÷åíà ïðàâèëüíî
+                // ÑƒÐ±ÐµÐ¶Ð´Ð°ÐµÐ¼ÑÑ Ñ‡Ñ‚Ð¾ ÑÑ‚Ð°Ð½Ð¸Ñ†Ð° Ð¿Ð¾Ð»ÑƒÑ‡ÐµÐ½Ð° Ð¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð¾
                 $search_res_kol = $this->Parser->parseStr($html['html'], '<span class="page_block_header_count','</span></div>');
 
                 if($search_res_kol[status]===true )
@@ -127,14 +127,14 @@ class Search extends VK_functions_abstract implements VK_functions_interface
                     $search_res_kol2 = null;
                     $search_res_kol2 = $this->Parser->parseStr($search_res_kol['html'], '">','<span class="num_delim">');
 
-                    // óáåæäàåìñÿ ÷òî ðåçóëüòàòîâ ïîèñêà áîëüøå 1000
+                    // ÑƒÐ±ÐµÐ¶Ð´Ð°ÐµÐ¼ÑÑ Ñ‡Ñ‚Ð¾ Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚Ð¾Ð² Ð¿Ð¾Ð¸ÑÐºÐ° Ð±Ð¾Ð»ÑŒÑˆÐµ 1000
                     if($search_res_kol2[status]===true  && is_numeric(trim($search_res_kol2[html])))
                     {
                         $data[search_kol]=1000;
                         $detail_level++;
                         $data[detail_level]=$detail_level;
 
-                        // ïðè èçìåíåíèèè äåòàëèçàöèè ïîèñêà ñáðàñûâàåì
+                        // Ð¿Ñ€Ð¸ Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ð¸Ð¸ Ð´ÐµÑ‚Ð°Ð»Ð¸Ð·Ð°Ñ†Ð¸Ð¸ Ð¿Ð¾Ð¸ÑÐºÐ° ÑÐ±Ñ€Ð°ÑÑ‹Ð²Ð°ÐµÐ¼
                         $null_offset=true;
                     }
                     else
@@ -144,10 +144,10 @@ class Search extends VK_functions_abstract implements VK_functions_interface
                         if(is_numeric($sk))
                         {
 
-                            // âûÿñíåÿì ñêîëüêî ðåçóëüòîâ ìåíüøå 1000
+                            // Ð²Ñ‹ÑÑÐ½ÐµÑÐ¼ ÑÐºÐ¾Ð»ÑŒÐºÐ¾ Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð¾Ð² Ð¼ÐµÐ½ÑŒÑˆÐµ 1000
                             if(!$data[search_kol] || $data[search_kol] ==1000)
                             {
-                                // âû÷èñëÿåì êîëè÷åñòâî öèêëîâ ïîñëå êîòîðûõ âîçìîæíî çàâèñàíèå
+                                // Ð²Ñ‹Ñ‡Ð¸ÑÐ»ÑÐµÐ¼ ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ñ†Ð¸ÐºÐ»Ð¾Ð² Ð¿Ð¾ÑÐ»Ðµ ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ñ… Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ Ð·Ð°Ð²Ð¸ÑÐ°Ð½Ð¸Ðµ
                                 $zavis = ceil($sk/18)-1;
                             }
 
@@ -158,7 +158,7 @@ class Search extends VK_functions_abstract implements VK_functions_interface
                 }
                 else
                 {
-                    // âîçìîæíî íåîáúîäèìî àíàëèçèðîâàòü íå ïðîèçîøåë ëè ïåðåõîä íà ìîáèëüíóþ ñòðàíèöó
+                    // Ð²Ð¾Ð·Ð¼Ð¾Ð¶Ð½Ð¾ Ð½ÐµÐ¾Ð±ÑŠÐ¾Ð´Ð¸Ð¼Ð¾ Ð°Ð½Ð°Ð»Ð¸Ð·Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ð½Ðµ Ð¿Ñ€Ð¾Ð¸Ð·Ð¾ÑˆÐµÐ» Ð»Ð¸ Ð¿ÐµÑ€ÐµÑ…Ð¾Ð´ Ð½Ð° Ð¼Ð¾Ð±Ð¸Ð»ÑŒÐ½ÑƒÑŽ ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ñƒ
                     $reloc_check = $this->Parser->parseStr($html['lasturl'], '://','/search?');
                     if($reloc_check['html'] =='m.vk.com' || strpos($html['lasturl'],'badbrowser')>0)
                     {
@@ -167,9 +167,9 @@ class Search extends VK_functions_abstract implements VK_functions_interface
                     }
                     else
                     {
-                        //îøèáêà ïîëó÷åíèÿ ñòðàíèöû
+                        //Ð¾ÑˆÐ¸Ð±ÐºÐ° Ð¿Ð¾Ð»ÑƒÑ‡ÐµÐ½Ð¸Ñ ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ñ‹
 
-                        // ïðîâåðÿåì íà îøèáêó ïðîêñè
+                        // Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ Ð½Ð° Ð¾ÑˆÐ¸Ð±ÐºÑƒ Ð¿Ñ€Ð¾ÐºÑÐ¸
                         $proxy_bad = $this->Parser->parseStr($html['html'], 'Client','IP');
                         if($proxy_bad['status']) return array('status' => false ,'code' => 1, 'msg' => "connect_error");
 
@@ -179,7 +179,7 @@ class Search extends VK_functions_abstract implements VK_functions_interface
 
 
 
-                // ñîçäàåì ìàññèâ  vk_id
+                // ÑÐ¾Ð·Ð´Ð°ÐµÐ¼ Ð¼Ð°ÑÑÐ¸Ð²  vk_id
                 $friends = $this->Parser->parseStrAll($html['html'], 'data-id="','"');
                 if(!$friends['status'])
                 {

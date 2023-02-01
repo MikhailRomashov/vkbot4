@@ -13,11 +13,11 @@ class LogClass
     }
 
 
-    public function save(string $prefix,string $line, string $log)
+    public function save(string $prefix, string $log)
     {
+
         $from=debug_backtrace();
-      //  file_put_contents($prefix. "_".$this->from_php_script."_". $this->bot_id . ".txt", date("d.m.Y H:i:s") ."строка $line \r\n $log \r\n================================\r\n", FILE_APPEND | LOCK_EX);
-        file_put_contents($prefix. "_".$from[0]["script"]."_". $this->bot_id . ".txt", date("d.m.Y H:i:s") ."строка ".$from[0]["line"]." \r\n $log \r\n================================\r\n", FILE_APPEND | LOCK_EX);
+        file_put_contents($prefix. "_".$from[0]["object"]->from_php_script."_botId". $this->bot_id . ".txt", date("d.m.Y H:i:s") ." СЃС‚СЂРѕРєР° ".$from[0]["line"]." \r\n $log \r\n================================\r\n", FILE_APPEND | LOCK_EX);
 
     }
 }

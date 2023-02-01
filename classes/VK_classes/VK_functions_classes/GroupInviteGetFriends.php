@@ -8,7 +8,7 @@ class GroupInviteGetFriends extends VK_functions_abstract implements VK_function
     public function doit(string $Method,array $RequestParam,array $PostData,array $CurlData,array $DebugOptions)
     {
     ///////////////////////
-    // получам список друзей для рассыоки приглашение в группу
+    // РїРѕР»СѓС‡Р°Рј СЃРїРёСЃРѕРє РґСЂСѓР·РµР№ РґР»СЏ СЂР°СЃСЃС‹РѕРєРё РїСЂРёРіР»Р°С€РµРЅРёРµ РІ РіСЂСѓРїРїСѓ
     ////////////////////////
     //function group_invite_get_friends($group_screen_name,$kol=10)
 
@@ -18,10 +18,10 @@ class GroupInviteGetFriends extends VK_functions_abstract implements VK_function
         $friends_out_vkid= array();
         $friends_out_hash= array();
 
-        //перемещиваем алфавит
+        //РїРµСЂРµРјРµС‰РёРІР°РµРј Р°Р»С„Р°РІРёС‚
         shuffle($this->alphabet_rus);
 
-        // получить список друзей для приглашения
+        // РїРѕР»СѓС‡РёС‚СЊ СЃРїРёСЃРѕРє РґСЂСѓР·РµР№ РґР»СЏ РїСЂРёРіР»Р°С€РµРЅРёСЏ
         $zavis=3;
 
         do{
@@ -33,7 +33,7 @@ class GroupInviteGetFriends extends VK_functions_abstract implements VK_function
             $data[zavis]=$zavis;
 
 
-            // открывем страницу со списком друзей
+            // РѕС‚РєСЂС‹РІРµРј СЃС‚СЂР°РЅРёС†Сѓ СЃРѕ СЃРїРёСЃРєРѕРј РґСЂСѓР·РµР№
 
             $html=$this->Call->httpCall($Method."?act=invite&q=$query", $PostData, $CurlData, $DebugOptions);
 
@@ -41,11 +41,11 @@ class GroupInviteGetFriends extends VK_functions_abstract implements VK_function
             {
                 list($ht,$ref)=explode("vk.com/",$html[lasturl]);
 
-                // Проверям произошла ли переадресация а зачит группа недоступна для пригоашений
+                // РџСЂРѕРІРµСЂСЏРј РїСЂРѕРёР·РѕС€Р»Р° Р»Рё РїРµСЂРµР°РґСЂРµСЃР°С†РёСЏ Р° Р·Р°С‡РёС‚ РіСЂСѓРїРїР° РЅРµРґРѕСЃС‚СѓРїРЅР° РґР»СЏ РїСЂРёРіРѕР°С€РµРЅРёР№
                 if($ref != $Method."?act=invite&q=$query")
                     return array('status' => false , 'code' => 71, 'msg' => "can`t_invite", 'html' =>$html);
 
-                // создаем массив vk_id
+                // СЃРѕР·РґР°РµРј РјР°СЃСЃРёРІ vk_id
                 $friends_out_link = $this->Parser->parseStrAll($html['html'], '?act=a_invite&mid=','">');
 
                 if(!$friends_out_link[status])
@@ -56,7 +56,7 @@ class GroupInviteGetFriends extends VK_functions_abstract implements VK_function
                 {
                     $zavis=3;
 
-                    // разделяем на массивы vkid и hash
+                    // СЂР°Р·РґРµР»СЏРµРј РЅР° РјР°СЃСЃРёРІС‹ vkid Рё hash
                     while(count($friends_out_link[html])>0)
                     {
 
@@ -71,7 +71,7 @@ class GroupInviteGetFriends extends VK_functions_abstract implements VK_function
             {
                 return $html;
             }
-        }while(count($this->alphabet_rus)>0 && count($friends_out_vkid)<$kol && $zavis>0); //работаем пока не кончился алфавит или не найдено нужно число юзеров
+        }while(count($this->alphabet_rus)>0 && count($friends_out_vkid)<$kol && $zavis>0); //СЂР°Р±РѕС‚Р°РµРј РїРѕРєР° РЅРµ РєРѕРЅС‡РёР»СЃСЏ Р°Р»С„Р°РІРёС‚ РёР»Рё РЅРµ РЅР°Р№РґРµРЅРѕ РЅСѓР¶РЅРѕ С‡РёСЃР»Рѕ СЋР·РµСЂРѕРІ
 
         array_push($data,$friends_out_vkid);
         //array_push($data,$friends_out_hash);

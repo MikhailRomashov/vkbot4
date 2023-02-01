@@ -9,7 +9,7 @@ class GetPage extends VK_functions_abstract implements VK_functions_interface
     {
         // TODO: Implement doit() method.
         ///////////////////////
-        // îòêðûâàåì çàäàíóþ ñòðàíèöó
+        // Ð¾Ñ‚ÐºÑ€Ñ‹Ð²Ð°ÐµÐ¼ Ð·Ð°Ð´Ð°Ð½ÑƒÑŽ ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ñƒ
         ////////////////////////
 
         return $this->Call->httpCall($Method, $PostData, $CurlData, $DebugOptions);

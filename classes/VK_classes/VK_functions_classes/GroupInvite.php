@@ -9,12 +9,12 @@ class GroupInvite extends VK_functions_abstract implements VK_functions_interfac
     {
 
 ///////////////////////
-// ïîëó÷àì ñïèñîê äğóçåé äëÿ ğàññûîêè ïğèãëàøåíèå â ãğóïïó
+// Ğ¿Ğ¾Ğ»ÑƒÑ‡Ğ°Ğ¼ ÑĞ¿Ğ¸ÑĞ¾Ğº Ğ´Ñ€ÑƒĞ·ĞµĞ¹ Ğ´Ğ»Ñ Ñ€Ğ°ÑÑÑ‹Ğ¾ĞºĞ¸ Ğ¿Ñ€Ğ¸Ğ³Ğ»Ğ°ÑˆĞµĞ½Ğ¸Ğµ Ğ² Ğ³Ñ€ÑƒĞ¿Ğ¿Ñƒ
 ////////////////////////
 /// /function group_invite($group_screen_name,$user_for_invite_id,$user_for_invite_hash)
 
 
-       // àäàïòèğóåì èç íîâîé ôîğìà ïåğåäà÷è ïğàìåòğîâ
+       // Ğ°Ğ´Ğ°Ğ¿Ñ‚Ğ¸Ñ€ÑƒĞµĞ¼ Ğ¸Ğ· Ğ½Ğ¾Ğ²Ğ¾Ğ¹ Ñ„Ğ¾Ñ€Ğ¼Ğ° Ğ¿ĞµÑ€ĞµĞ´Ğ°Ñ‡Ğ¸ Ğ¿Ñ€Ğ°Ğ¼ĞµÑ‚Ñ€Ğ¾Ğ²
         $user_for_invite_id     =$RequestParam['user_for_invite_id']    ?? 0;
         $user_for_invite_hash   =$RequestParam['user_for_invite_hash']  ?? '';
 
@@ -23,23 +23,23 @@ class GroupInvite extends VK_functions_abstract implements VK_functions_interfac
 
         //https://m.vk.com/powerdom?act=a_invite&mid=$user_for_invite_id&hash=$user_for_invite_hash
 
-        // îòêğûâåì ñòğàíèöó ñî ñïèñêîì äğóçåé
+        // Ğ¾Ñ‚ĞºÑ€Ñ‹Ğ²ĞµĞ¼ ÑÑ‚Ñ€Ğ°Ğ½Ğ¸Ñ†Ñƒ ÑĞ¾ ÑĞ¿Ğ¸ÑĞºĞ¾Ğ¼ Ğ´Ñ€ÑƒĞ·ĞµĞ¹
         $html=$this->Call->httpCall("$Method?act=a_invite&mid=$user_for_invite_id&hash=$user_for_invite_hash", $PostData, $CurlData, $DebugOptions);
-        $this->Log->save("GrInv_",__LINE__," \r\n çàïğîñ $Method?act=a_invite&mid=$user_for_invite_id&hash=$user_for_invite_hash :\r\n ñòğàíèöà öåëèêîì :\r\n". var_export($html,true));
+        $this->Log->save("GrInv_",__LINE__," \r\n Ğ·Ğ°Ğ¿Ñ€Ğ¾Ñ $Method?act=a_invite&mid=$user_for_invite_id&hash=$user_for_invite_hash :\r\n ÑÑ‚Ñ€Ğ°Ğ½Ğ¸Ñ†Ğ° Ñ†ĞµĞ»Ğ¸ĞºĞ¾Ğ¼ :\r\n". var_export($html,true));
 
         if($html[status])
         {
 
-            // åñëè óñïåøíî ïğèãëàñè òî act=invite?g="idãğóïïû"  èëè ?act=invite&m=380&g="idãğóïïû"&u=$bot_vk_id&h=.....
+            // ĞµÑĞ»Ğ¸ ÑƒÑĞ¿ĞµÑˆĞ½Ğ¾ Ğ¿Ñ€Ğ¸Ğ³Ğ»Ğ°ÑĞ¸ Ñ‚Ğ¾ act=invite?g="idĞ³Ñ€ÑƒĞ¿Ğ¿Ñ‹"  Ğ¸Ğ»Ğ¸ ?act=invite&m=380&g="idĞ³Ñ€ÑƒĞ¿Ğ¿Ñ‹"&u=$bot_vk_id&h=.....
             if(strpos($html['lasturl'],"m=380")>0) return array('status' => true , 'code' => 72, 'msg' => "invite_success" );
 
-            // åñëè óæå ïğèãëàøàëè òî last_url = ?act=invite&m=381
+            // ĞµÑĞ»Ğ¸ ÑƒĞ¶Ğµ Ğ¿Ñ€Ğ¸Ğ³Ğ»Ğ°ÑˆĞ°Ğ»Ğ¸ Ñ‚Ğ¾ last_url = ?act=invite&m=381
             if(strpos($html['lasturl'],"m=381")>0) return array('status' => false , 'code' => 73, 'msg' => "invite_alredy" );
 
-            // åñëè çàïğåòèë ïğèãëàøàòü òî last_url == ?act=invite&m=383
+            // ĞµÑĞ»Ğ¸ Ğ·Ğ°Ğ¿Ñ€ĞµÑ‚Ğ¸Ğ» Ğ¿Ñ€Ğ¸Ğ³Ğ»Ğ°ÑˆĞ°Ñ‚ÑŒ Ñ‚Ğ¾ last_url == ?act=invite&m=383
             if(strpos($html['lasturl'],"m=383")>0) return array('status' => false , 'code' => 74, 'msg' => "invite_forbidden" );
 
-            // åñëè ïğåâûøåí äíåâíîé ëèìèò òî last_url == ?act=invite&m=386
+            // ĞµÑĞ»Ğ¸ Ğ¿Ñ€ĞµĞ²Ñ‹ÑˆĞµĞ½ Ğ´Ğ½ĞµĞ²Ğ½Ğ¾Ğ¹ Ğ»Ğ¸Ğ¼Ğ¸Ñ‚ Ñ‚Ğ¾ last_url == ?act=invite&m=386
             if(strpos($html['lasturl'],"m=386")>0) return array('status' => false , 'code' => 75, 'msg' => "day_limit" );
 
         }

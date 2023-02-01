@@ -9,55 +9,55 @@ class GetFriendsKol extends VK_functions_abstract implements VK_functions_interf
     {
 
 ///////////////////////
-// получаем Количества друзей
+// РїРѕР»СѓС‡Р°РµРј РљРѕР»РёС‡РµСЃС‚РІР° РґСЂСѓР·РµР№
 ////////////////////////
 
         $data = array();
         $friends_short_link= array();
 
-        // открывем страницу со списком друзей
+        // РѕС‚РєСЂС‹РІРµРј СЃС‚СЂР°РЅРёС†Сѓ СЃРѕ СЃРїРёСЃРєРѕРј РґСЂСѓР·РµР№
         $html=$this->Call->httpCall('friends',$PostData, $CurlData, $DebugOptions);
         if($html[status])
         {
 
-            // отрезаем кусок с общим количеством друзей
+            // РѕС‚СЂРµР·Р°РµРј РєСѓСЃРѕРє СЃ РѕР±С‰РёРј РєРѕР»РёС‡РµСЃС‚РІРѕРј РґСЂСѓР·РµР№
             $friends_all_kol = $this->Parser->parseStr($html['html'], '<a href="/friends?section=all"','</a>');
 
-            // находим количество друзей
+            // РЅР°С…РѕРґРёРј РєРѕР»РёС‡РµСЃС‚РІРѕ РґСЂСѓР·РµР№
             $friends_kol1 = $this->Parser->parseStr($friends_all_kol['html'], 'dir="auto">','<span class="num_delim">');
             if($friends_kol1[status]===true )
             {
-                // друзей больше 1000. находим втрую часть
+                // РґСЂСѓР·РµР№ Р±РѕР»СЊС€Рµ 1000. РЅР°С…РѕРґРёРј РІС‚СЂСѓСЋ С‡Р°СЃС‚СЊ
                 $friends_kol2 = $this->Parser->parseStr($friends_all_kol['html'], '<span class="num_delim"> </span>','</span>');
                 $fr_kol=trim($friends_kol1[html]).trim($friends_kol2[html]);
             }
             else
             {
-                //друзей меньеш 1000. выделдяем
+                //РґСЂСѓР·РµР№ РјРµРЅСЊРµС€ 1000. РІС‹РґРµР»РґСЏРµРј
                 $friends_kol = $this->Parser->parseStr($friends_all_kol['html'], 'dir="auto">','</span>');
                 $fr_kol=trim($friends_kol[html]);
             }
 
-            // отрезаем кусок с  количеством исходящих запросов в друзья
+            // РѕС‚СЂРµР·Р°РµРј РєСѓСЃРѕРє СЃ  РєРѕР»РёС‡РµСЃС‚РІРѕРј РёСЃС…РѕРґСЏС‰РёС… Р·Р°РїСЂРѕСЃРѕРІ РІ РґСЂСѓР·СЊСЏ
             $friends_out_kol = $this->Parser->parseStr($html['html'], '<a href="/friends?section=out_requests"','</a>');
 
-            // находим количество друзей
+            // РЅР°С…РѕРґРёРј РєРѕР»РёС‡РµСЃС‚РІРѕ РґСЂСѓР·РµР№
             $friends_out_kol1 = $this->Parser->parseStr($friends_out_kol['html'], 'dir="auto">','<span class="num_delim">');
             if($friends_out_kol1[status]===true )
             {
-                // друзей больше 1000. находим втрую часть
+                // РґСЂСѓР·РµР№ Р±РѕР»СЊС€Рµ 1000. РЅР°С…РѕРґРёРј РІС‚СЂСѓСЋ С‡Р°СЃС‚СЊ
                 $friends_out_kol2 = $this->Parser->parseStr($friends_out_kol['html'], '<span class="num_delim"> </span>','</span>');
                 $fr_out_kol=trim($friends_out_kol1[html]).trim($friends_out_kol2[html]);
             }
             else
             {
-                //друзей меньеш 1000. выделдяем
+                //РґСЂСѓР·РµР№ РјРµРЅСЊРµС€ 1000. РІС‹РґРµР»РґСЏРµРј
                 $friends_out_kol = $this->Parser->parseStr($friends_out_kol['html'], 'dir="auto">','</span>');
                 $fr_out_kol=trim($friends_out_kol[html]);
             }
 
 
-            //если надено число друзей.
+            //РµСЃР»Рё РЅР°РґРµРЅРѕ С‡РёСЃР»Рѕ РґСЂСѓР·РµР№.
             if($fr_kol)
             {
 
@@ -66,21 +66,21 @@ class GetFriendsKol extends VK_functions_abstract implements VK_functions_interf
             }
             else
             {
-                $this->Log->save("FrOutErr",__LINE__," ошибка парсинга количества друзей \r\n ".var_export($friends,true)." \r\n html:  \r\n ". var_export($html,true));
+                $this->Log->save("FrOutErr",__LINE__," РѕС€РёР±РєР° РїР°СЂСЃРёРЅРіР° РєРѕР»РёС‡РµСЃС‚РІР° РґСЂСѓР·РµР№ \r\n ".var_export($friends,true)." \r\n html:  \r\n ". var_export($html,true));
                 array_push($data,0);
                 array_push($data,0);
 
-                // проверка на профиль с нулевым количеством друзей
+                // РїСЂРѕРІРµСЂРєР° РЅР° РїСЂРѕС„РёР»СЊ СЃ РЅСѓР»РµРІС‹Рј РєРѕР»РёС‡РµСЃС‚РІРѕРј РґСЂСѓР·РµР№
                 $friends_page_loaded = $this->Parser->parseStr($html['html'], 'id="fr_','earch_field');
 
                 if(!$friends_page_loaded[status])
                 {
-                    // проверяем на ошибку прокси
+                    // РїСЂРѕРІРµСЂСЏРµРј РЅР° РѕС€РёР±РєСѓ РїСЂРѕРєСЃРё
                     $proxy_bad = $this->Parser->parseStr($html['html'], 'Client','IP');
                     if($proxy_bad[status]) return array('status' => false ,'code' => 1, 'msg' => "connect_error");
 
-                    // проверка на слишком большое количествозапросов
-                    // просто стопарнем бота чтобы она перезапустился
+                    // РїСЂРѕРІРµСЂРєР° РЅР° СЃР»РёС€РєРѕРј Р±РѕР»СЊС€РѕРµ РєРѕР»РёС‡РµСЃС‚РІРѕР·Р°РїСЂРѕСЃРѕРІ
+                    // РїСЂРѕСЃС‚Рѕ СЃС‚РѕРїР°СЂРЅРµРј Р±РѕС‚Р° С‡С‚РѕР±С‹ РѕРЅР° РїРµСЂРµР·Р°РїСѓСЃС‚РёР»СЃСЏ
                     $proxy_toomany = $this->Parser->parseStr($html['html'], 'Too','Many');
                     if($proxy_toomany[status]) die;
 
@@ -90,7 +90,7 @@ class GetFriendsKol extends VK_functions_abstract implements VK_functions_interf
 
             if($fr_kol>0)
             {
-                // создаем массив vk_id
+                // СЃРѕР·РґР°РµРј РјР°СЃСЃРёРІ vk_id
                 $friends = $this->Parser->parseStrAll($html['html'], '<div id="res','"></div>');
                 if(!$friends[status])
                 {
@@ -99,7 +99,7 @@ class GetFriendsKol extends VK_functions_abstract implements VK_functions_interf
                 }
                 else
                 {
-                    // разделяем на массивы short_link И vkid
+                    // СЂР°Р·РґРµР»СЏРµРј РЅР° РјР°СЃСЃРёРІС‹ short_link Р vkid
                     while(count($friends[html])>0)
                     {
                         $vkid=array_shift($friends[html]);
@@ -122,7 +122,7 @@ class GetFriendsKol extends VK_functions_abstract implements VK_functions_interf
 
 
 
-        // добавляем массив друзей
+        // РґРѕР±Р°РІР»СЏРµРј РјР°СЃСЃРёРІ РґСЂСѓР·РµР№
 
         array_push($data,$friends_short_link);
 

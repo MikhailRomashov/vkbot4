@@ -14,36 +14,36 @@ class GetWall extends VK_functions_abstract implements VK_functions_interface
             $post_link 	= array();
             $post_id	= array();
             //https://m.vk.com/like?act=publish&object=wall-51699403_4633&from=wall-51699403
-            //https://m.vk.com/like?act=del&object=wall-51699403_4627&from=wall-51699403&hash=8a6e0ac9c510432035&one=0  это линк на дизлайк. используем как признак уже сделаного репоста
+            //https://m.vk.com/like?act=del&object=wall-51699403_4627&from=wall-51699403&hash=8a6e0ac9c510432035&one=0  СЌС‚Рѕ Р»РёРЅРє РЅР° РґРёР·Р»Р°Р№Рє. РёСЃРїРѕР»СЊР·СѓРµРј РєР°Рє РїСЂРёР·РЅР°Рє СѓР¶Рµ СЃРґРµР»Р°РЅРѕРіРѕ СЂРµРїРѕСЃС‚Р°
             //https://m.vk.com/like?act=add_repost&post_from=-51699403_4647&from=wall-51699403&hash=8a6e0ac9c510432035&to=6827658&from_publish=1
             $html=$this->Call->httpCall($Method, $PostData, $CurlData, $DebugOptions);
 
             if($html[status])
             {
 
-                $correction=0; // корректор на случай если полученая строка нам не нраивтьься
+                $correction=0; // РєРѕСЂСЂРµРєС‚РѕСЂ РЅР° СЃР»СѓС‡Р°Р№ РµСЃР»Рё РїРѕР»СѓС‡РµРЅР°СЏ СЃС‚СЂРѕРєР° РЅР°Рј РЅРµ РЅСЂР°РёРІС‚СЊСЊСЃСЏ
                 for($i=1;$i<=$post_kol;$i++)
                 {
-                    // получить очередную запись со стены
+                    // РїРѕР»СѓС‡РёС‚СЊ РѕС‡РµСЂРµРґРЅСѓСЋ Р·Р°РїРёСЃСЊ СЃРѕ СЃС‚РµРЅС‹
 
                     $link = $this->Parser->parseStr($html['html'], 'like?act=set_reaction','amp;one=0"',$i+$correction);
 
-                    // если ничего не найдено то возможно имеем дело со старой версией отображения
+                    // РµСЃР»Рё РЅРёС‡РµРіРѕ РЅРµ РЅР°Р№РґРµРЅРѕ С‚Рѕ РІРѕР·РјРѕР¶РЅРѕ РёРјРµРµРј РґРµР»Рѕ СЃРѕ СЃС‚Р°СЂРѕР№ РІРµСЂСЃРёРµР№ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ
                     if(!$link[status]) $link = $this->Parser->parseStr($html['html'], 'like?act=add','one=0"',$i+$correction);
 
-                    // если запись успешно получена
+                    // РµСЃР»Рё Р·Р°РїРёСЃСЊ СѓСЃРїРµС€РЅРѕ РїРѕР»СѓС‡РµРЅР°
                     if($link[status])
                     {
 
 
-                        // исключаем рекламые записи
+                        // РёСЃРєР»СЋС‡Р°РµРј СЂРµРєР»Р°РјС‹Рµ Р·Р°РїРёСЃРё
                         if(!$all_post)
                         {
-                            // проверяем вхождение id данной группы в ссылку
+                            // РїСЂРѕРІРµСЂСЏРµРј РІС…РѕР¶РґРµРЅРёРµ id РґР°РЅРЅРѕР№ РіСЂСѓРїРїС‹ РІ СЃСЃС‹Р»РєСѓ
                             if(strpos($link[html],$group_id)==0)
                             {
-                                // вхождения нет значит запись рекламная
-                                // получили ненужный нам линк. игнорим
+                                // РІС…РѕР¶РґРµРЅРёСЏ РЅРµС‚ Р·РЅР°С‡РёС‚ Р·Р°РїРёСЃСЊ СЂРµРєР»Р°РјРЅР°СЏ
+                                // РїРѕР»СѓС‡РёР»Рё РЅРµРЅСѓР¶РЅС‹Р№ РЅР°Рј Р»РёРЅРє. РёРіРЅРѕСЂРёРј
                                 $correction++;
                                 $i--;
                                 continue;
@@ -51,23 +51,23 @@ class GetWall extends VK_functions_abstract implements VK_functions_interface
 
                         }
 
-                        // вычленяем id поста
+                        // РІС‹С‡Р»РµРЅСЏРµРј id РїРѕСЃС‚Р°
 
                         $postid= $this->Parser->parseStr($link[html], 'wall-'.$group_id.'_','&',1);
 
-                        // проверка дубликата
+                        // РїСЂРѕРІРµСЂРєР° РґСѓР±Р»РёРєР°С‚Р°
                         if(in_array($postid[html], $post_id))
                         {
-                            // получили ненужный нам линк. игнорим
+                            // РїРѕР»СѓС‡РёР»Рё РЅРµРЅСѓР¶РЅС‹Р№ РЅР°Рј Р»РёРЅРє. РёРіРЅРѕСЂРёРј
                             $correction++;
                             $i--;
                             continue;
                         }
 
-                        // добавляем ее в массив актуальных записей
+                        // РґРѕР±Р°РІР»СЏРµРј РµРµ РІ РјР°СЃСЃРёРІ Р°РєС‚СѓР°Р»СЊРЅС‹С… Р·Р°РїРёСЃРµР№
                         array_push($post_link,$link[html]);
 
-                        // заносим id записи
+                        // Р·Р°РЅРѕСЃРёРј id Р·Р°РїРёСЃРё
                         array_push($post_id,$postid[html]);
 
 
@@ -75,16 +75,16 @@ class GetWall extends VK_functions_abstract implements VK_functions_interface
                     }
                     else
                     {
-                        // на стене группы  не найдено ни очередной записи
+                        // РЅР° СЃС‚РµРЅРµ РіСЂСѓРїРїС‹  РЅРµ РЅР°Р№РґРµРЅРѕ РЅРё РѕС‡РµСЂРµРґРЅРѕР№ Р·Р°РїРёСЃРё
                         if(count($post_link)==0) return array('status' => true ,'code' => 31, 'msg' => "not_complete_get_wall",'links' => $post_link, 'post_id' =>$post_id) ;
                     }
                 }
-                // возравщаем массив актуальных к репосту записей
+                // РІРѕР·СЂР°РІС‰Р°РµРј РјР°СЃСЃРёРІ Р°РєС‚СѓР°Р»СЊРЅС‹С… Рє СЂРµРїРѕСЃС‚Сѓ Р·Р°РїРёСЃРµР№
                 return array('status' => true ,'code' => 30, 'msg' => "success_get_wall",'links' => $post_link, 'post_id' =>$post_id) ;
             }
             else
             {
-                // если данные ссо стены группы не получены
+                // РµСЃР»Рё РґР°РЅРЅС‹Рµ СЃСЃРѕ СЃС‚РµРЅС‹ РіСЂСѓРїРїС‹ РЅРµ РїРѕР»СѓС‡РµРЅС‹
                 return $html;
             }
 

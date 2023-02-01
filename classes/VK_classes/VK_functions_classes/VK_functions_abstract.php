@@ -4,11 +4,7 @@
 abstract  class VK_functions_abstract
 {
 
-    public $Call;
-    public $Log;
-    public $Parser;
-    public $Captcha;
-    public $Services;
+    public $GenFunc;
     public $alphabet_rus;
     public $bot_id;
     public $bot_vk_id;
@@ -22,18 +18,15 @@ abstract  class VK_functions_abstract
         $this->apiURL =$apiURL;
         $this->Pref   =$httpPrefix;
 
-        // ÔÂÂ‰‡ÂÏ ÒÒ˚ÎÍË Ì‡ ÒÓÁ‰‡ÌÌ˚Â ‚ CeneralClassesInit Ó·˘ËÂ ˝ÍÁÂÏÔÎÂ˚ ÍÎ‡ÒÒÓ‚
-        $this->Call     =$GenFunc->HttpCall;
-        $this->Parser   =$GenFunc->Parser;
-        $this->Captcha  =$GenFunc->Captcha;
-        $this->Services =$GenFunc->Services;
+        // –ø–µ—Ä–µ–¥–∞–µ–º —Å—Å—ã–ª–∫–∏ –Ω–∞ —Å–æ–∑–¥–∞–Ω–Ω—ã–µ –≤ CeneralClassesInit –æ–±—â–∏–µ —ç–∫–∑–µ–º–ø–ª–µ—Ä—ã –∫–ª–∞—Å—Å–æ–≤
+        $this->GenFunc  =$GenFunc;
 
         $this->bot_id   = $GenFunc->bot_id;
         $this->bot_vk_id= $GenFunc->bot_vk_id;
 
-        // ÒÓÁ‰‡ÂÏ ˝ÍÁÂÏÔÎˇ ÍÎ‡ÒÒ‡ ÎÓ„ËÓ‚‡ÌËˇ Ò ÛÍ‡Á‡ÌËÂ ‚˚Á‚‚‡˘Â„Ó ‰Ó˜ÂÌÂ„Ó ÍÎ‡ÒÒ‡
+        // —Å–æ–∑–¥–∞–µ–º —ç–∫–∑–µ–º–ø–ª—è—Ä –∫–ª–∞—Å—Å–∞ –ª–æ–≥–∏—Ä–æ–≤–∞–Ω–∏—è —Å —É–∫–∞–∑–∞–Ω–∏–µ –≤—ã–∑–≤–≤–∞—â–µ–≥–æ –¥–æ—á–µ—Ä–Ω–µ–≥–æ –∫–ª–∞—Å—Å–∞
         $this->Log      =   new LogClass($GenFunc->bot_id,get_called_class());
 
-        $this->alphabet_rus = array('‡', '·', '‚', '„', '‰', 'Â', 'Ê', 'Á', 'Ë', 'Í', 'Î', 'Ï', 'Ì', 'Ó', 'Ô', '', 'Ò', 'Ú', 'Û', 'Ù', 'ı', 'ˆ', '˜', '¯', '˘', '˝', '˛', 'ˇ');
+        $this->alphabet_rus = array('–∞', '–±', '–≤', '–≥', '–¥', '–µ', '–∂', '–∑', '–∏', '–∫', '–ª', '–º', '–Ω', '–æ', '–ø', '—Ä', '—Å', '—Ç', '—É', '—Ñ', '—Ö', '—Ü', '—á', '—à', '—â', '—ç', '—é', '—è');
     }
 }

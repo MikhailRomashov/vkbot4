@@ -10,24 +10,24 @@ class VkFunctionsConstruct
 
     public function __construct($GenFunc)
     {
-
+        //
         $this->GenFunc=$GenFunc;
 
 
         $this->basedir ="VK_functions_classes";
 
-        // ïîäêëþ÷àåì âñå êëàññû ôóêöèé âê
+        // Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡Ð°ÐµÐ¼ Ð²ÑÐµ ÐºÐ»Ð°ÑÑÑ‹ Ñ„ÑƒÐºÑ†Ð¸Ð¹ Ð²Ðº
         foreach (glob($this->basedir."/*.php") as $filename)
         {
             $this->ClassNameArray[pathinfo($filename)['filename']]=true;
         }
-        // âåðíóòü ìàññèâ íàçâàíèé êëàññîâ ôóíêöèé
+        // Ð²ÐµÑ€Ð½ÑƒÑ‚ÑŒ Ð¼Ð°ÑÑÐ¸Ð² Ð½Ð°Ð·Ð²Ð°Ð½Ð¸Ð¹ ÐºÐ»Ð°ÑÑÐ¾Ð² Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¹
         return $this->ClassNameArray;
 
 
     }
 
-    // ñîçäàâàòüñÿ ýêçåìïëÿîû áóäóò ïî çàïðîñó
+    // ÑÐ¾Ð·Ð´Ð°Ð²Ð°Ñ‚ÑŒÑÑ ÑÐºÐ·ÐµÐ¼Ð¿Ð»ÑÐ¾Ñ‹ Ð±ÑƒÐ´ÑƒÑ‚ Ð¿Ð¾ Ð·Ð°Ð¿Ñ€Ð¾ÑÑƒ
     public function __invoke(string $classname,
                              $Method        = array(),
                              $RequestParam  = array(),
@@ -36,22 +36,22 @@ class VkFunctionsConstruct
                              $DebugOptions  = array()
                             )
     {
-        // ïðîâåðÿåì ñóùåñòâóåò ëè ýêçåìïëÿð âûçûâàåìîãî êëàññà. ïðè íåîáõîäèìîñòè ñîçäàåì
+        // Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ ÑÑƒÑ‰ÐµÑÑ‚Ð²ÑƒÐµÑ‚ Ð»Ð¸ ÑÐºÐ·ÐµÐ¼Ð¿Ð»ÑÑ€ Ð²Ñ‹Ð·Ñ‹Ð²Ð°ÐµÐ¼Ð¾Ð³Ð¾ ÐºÐ»Ð°ÑÑÐ°. Ð¿Ñ€Ð¸ Ð½ÐµÐ¾Ð±Ñ…Ð¾Ð´Ð¸Ð¼Ð¾ÑÑ‚Ð¸ ÑÐ¾Ð·Ð´Ð°ÐµÐ¼
         if(!isset($this->$classname))  $this->MakeClass($classname);
 
-        // âûçûâàåì ôóíêöèþ äàííîãî êëàññà è âîçâðàùàåì ðåçùóüòòà ðàáîòû
+        // Ð²Ñ‹Ð·Ñ‹Ð²Ð°ÐµÐ¼ Ñ„ÑƒÐ½ÐºÑ†Ð¸ÑŽ Ð´Ð°Ð½Ð½Ð¾Ð³Ð¾ ÐºÐ»Ð°ÑÑÐ° Ð¸ Ð²Ð¾Ð·Ð²Ñ€Ð°Ñ‰Ð°ÐµÐ¼ Ñ€ÐµÐ·Ñ‰ÑƒÑŒÑ‚Ñ‚Ð° Ñ€Ð°Ð±Ð¾Ñ‚Ñ‹
         return $this->$classname->doit($Method,$RequestParam,$PostData,$CurlData,$DebugOptions);
     }
 
     public function MakeClass($classname)
     {
-        // ïðîâåðèòü åñòü ëè âûçûâàåìûé êëàññ
+        // Ð¿Ñ€Ð¾Ð²ÐµÑ€Ð¸Ñ‚ÑŒ ÐµÑÑ‚ÑŒ Ð»Ð¸ Ð²Ñ‹Ð·Ñ‹Ð²Ð°ÐµÐ¼Ñ‹Ð¹ ÐºÐ»Ð°ÑÑ
         if(!$this->ClassNameArray[$classname]) return false;
 
-        // ïîäêëþ÷àåò êëàññ
+        // Ð¿Ð¾Ð´ÐºÐ»ÑŽÑ‡Ð°ÐµÑ‚ ÐºÐ»Ð°ÑÑ
         require_once $this->basedir."/$classname.php";
 
-        // ñîçäàåò  ïî çàïðîñó ýêçåìïëÿð êëàññà îòäåëüíîé ôóíêöèè vk
+        // ÑÐ¾Ð·Ð´Ð°ÐµÑ‚  Ð¿Ð¾ Ð·Ð°Ð¿Ñ€Ð¾ÑÑƒ ÑÐºÐ·ÐµÐ¼Ð¿Ð»ÑÑ€ ÐºÐ»Ð°ÑÑÐ° Ð¾Ñ‚Ð´ÐµÐ»ÑŒÐ½Ð¾Ð¹ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¸ vk
         $this->$classname= new $classname($this->GenFunc);
     }
 

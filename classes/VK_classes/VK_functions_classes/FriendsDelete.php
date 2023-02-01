@@ -8,7 +8,7 @@ class FriendsDelete extends VK_functions_abstract implements VK_functions_interf
     public function doit(string $Method,array $RequestParam,array $PostData,array $CurlData,array $DebugOptions)
     {
  ///////////////////////
-// удаление исходящих запросов дружбы
+// СѓРґР°Р»РµРЅРёРµ РёСЃС…РѕРґСЏС‰РёС… Р·Р°РїСЂРѕСЃРѕРІ РґСЂСѓР¶Р±С‹
 ////////////////////////
 //function friends_delete($vk_id=0,$hash=0)
 
@@ -18,7 +18,7 @@ class FriendsDelete extends VK_functions_abstract implements VK_functions_interf
         if(!$vk_id) return array('status' => false ,'code' => 43, 'msg' => 'wrong_vk_id') ;
         if(!$hash)  return array('status' => false ,'code' => 44, 'msg' => 'wrong_hash') ;
 
-        // шлем запрос на удаление
+        // С€Р»РµРј Р·Р°РїСЂРѕСЃ РЅР° СѓРґР°Р»РµРЅРёРµ
         //https://vk.com/al_friends.php?act=remove
         // post :al=1,from_section=out_requests, hash=$hash,mid=$vk_id,report_spam=1
         $param[al]=1;

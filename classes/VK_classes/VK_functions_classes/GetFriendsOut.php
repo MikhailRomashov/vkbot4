@@ -8,7 +8,7 @@ class GetFriendsOut extends VK_functions_abstract implements VK_functions_interf
     public function doit(string $Method,array $RequestParam,array $PostData,array $CurlData,array $DebugOptions)
     {
 ///////////////////////
-// ïîëó÷àåì ñïèñîê èñõîäÿùèõ çàÿâîê â äðóçÿ
+// Ð¿Ð¾Ð»ÑƒÑ‡Ð°ÐµÐ¼ ÑÐ¿Ð¸ÑÐ¾Ðº Ð¸ÑÑ…Ð¾Ð´ÑÑ‰Ð¸Ñ… Ð·Ð°ÑÐ²Ð¾Ðº Ð² Ð´Ñ€ÑƒÐ·Ñ
 ////////////////////////
 //function get_friends_out($offset=0)
         {
@@ -18,27 +18,27 @@ class GetFriendsOut extends VK_functions_abstract implements VK_functions_interf
 
             $offset  =$RequestParam['offset']  ?? 0;
 
-            // ÝÒÎ ÍÅ çàïðîñ äðóçåé ëåâîãî þçåðà
-            // îòêðûâåì ñòðàíèöó ñî ñïèñêîì èñõîäÿùèõ çàÿâîê â äðóçüÿ áîòà
+            // Ð­Ð¢Ðž ÐÐ• Ð·Ð°Ð¿Ñ€Ð¾Ñ Ð´Ñ€ÑƒÐ·ÐµÐ¹ Ð»ÐµÐ²Ð¾Ð³Ð¾ ÑŽÐ·ÐµÑ€Ð°
+            // Ð¾Ñ‚ÐºÑ€Ñ‹Ð²ÐµÐ¼ ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ñƒ ÑÐ¾ ÑÐ¿Ð¸ÑÐºÐ¾Ð¼ Ð¸ÑÑ…Ð¾Ð´ÑÑ‰Ð¸Ñ… Ð·Ð°ÑÐ²Ð¾Ðº Ð² Ð´Ñ€ÑƒÐ·ÑŒÑ Ð±Ð¾Ñ‚Ð°
             $html=$this->Call->httpCall('friends?section=out_requests&offset='.$offset, $PostData, $CurlData, $DebugOptions);
             if($html[status])
             {
 
-                // íàõîäèì êîëè÷åñòâî çàÿâîê
-                // îòðåçàåì êóñîê ñ  êîëè÷åñòâîì èñõîäÿùèõ çàïðîñîâ â äðóçüÿ
+                // Ð½Ð°Ñ…Ð¾Ð´Ð¸Ð¼ ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð·Ð°ÑÐ²Ð¾Ðº
+                // Ð¾Ñ‚Ñ€ÐµÐ·Ð°ÐµÐ¼ ÐºÑƒÑÐ¾Ðº Ñ  ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾Ð¼ Ð¸ÑÑ…Ð¾Ð´ÑÑ‰Ð¸Ñ… Ð·Ð°Ð¿Ñ€Ð¾ÑÐ¾Ð² Ð² Ð´Ñ€ÑƒÐ·ÑŒÑ
                 $friends_out_kol = $this->Parser->parseStr($html['html'], '<a href="/friends?section=out_requests"','</a>');
 
-                // íàõîäèì êîëè÷åñòâî äðóçåé
+                // Ð½Ð°Ñ…Ð¾Ð´Ð¸Ð¼ ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ð´Ñ€ÑƒÐ·ÐµÐ¹
                 $friends_out_kol1 = $this->Parser->parseStr($friends_out_kol['html'], 'dir="auto">','<span class="num_delim">');
                 if($friends_out_kol1[status]===true )
                 {
-                    // äðóçåé áîëüøå 1000. íàõîäèì âòðóþ ÷àñòü
+                    // Ð´Ñ€ÑƒÐ·ÐµÐ¹ Ð±Ð¾Ð»ÑŒÑˆÐµ 1000. Ð½Ð°Ñ…Ð¾Ð´Ð¸Ð¼ Ð²Ñ‚Ñ€ÑƒÑŽ Ñ‡Ð°ÑÑ‚ÑŒ
                     $friends_out_kol2 = $this->Parser->parseStr($friends_out_kol['html'], '<span class="num_delim"> </span>','</span>');
                     $fr_out_kol=trim($friends_out_kol1[html]).trim($friends_out_kol2[html]);
                 }
                 else
                 {
-                    //äðóçåé ìåíüåø 1000. âûäåëäÿåì
+                    //Ð´Ñ€ÑƒÐ·ÐµÐ¹ Ð¼ÐµÐ½ÑŒÐµÑˆ 1000. Ð²Ñ‹Ð´ÐµÐ»Ð´ÑÐµÐ¼
                     $friends_out_kol = $this->Parser->parseStr($friends_out_kol['html'], 'dir="auto">','</span>');
                     $fr_out_kol=trim($friends_out_kol[html]);
                 }
@@ -52,7 +52,7 @@ class GetFriendsOut extends VK_functions_abstract implements VK_functions_interf
                     array_push($data,0);
                 }
 
-                // ñîçäàåì ìàññèâ vk_id
+                // ÑÐ¾Ð·Ð´Ð°ÐµÐ¼ Ð¼Ð°ÑÑÐ¸Ð² vk_id
 
                 $friends_out = $this->Parser->parseStrAll($html['html'], 'Friends.declineRequest(','&#39;, this)');
                 if(!$friends_out[status])
@@ -63,7 +63,7 @@ class GetFriendsOut extends VK_functions_abstract implements VK_functions_interf
                 else
                 {
 
-                    // ðàçäåëÿåì íà ìàññèâû  vkid è hash
+                    // Ñ€Ð°Ð·Ð´ÐµÐ»ÑÐµÐ¼ Ð½Ð° Ð¼Ð°ÑÑÐ¸Ð²Ñ‹  vkid Ð¸ hash
                     while(count($friends_out[html])>0)
                     {
                         list($vkid,$hash)=preg_split(", &#39;",array_shift($friends_out[html]));

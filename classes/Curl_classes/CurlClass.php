@@ -61,7 +61,7 @@ class CurlClass
             //curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL, true);
             if($this->proxylogin)
             {
-                curl_setopt($ch, CURLOPT_PROXYUSERPWD, $this->proxylogin); //ôîðìàò $this->proxylogin = "$username:$password"
+                curl_setopt($ch, CURLOPT_PROXYUSERPWD, $this->proxylogin); //Ñ„Ð¾Ñ€Ð¼Ð°Ñ‚ $this->proxylogin = "$username:$password"
                 curl_setopt($ch, CURLOPT_PROXYAUTH, CURLAUTH_BASIC);
             }
         }
@@ -119,7 +119,7 @@ class CurlClass
         {
             if($this->proxylogin)
             {
-                file_put_contents($_SERVER['SCRIPT_FILENAME']."-ilog".$this->bot_id.".txt",date("d.m.Y H:i:s")." ".var_export($answer, TRUE)."  ñòðîêà ".__LINE__." \r\n",FILE_APPEND | LOCK_EX);
+                file_put_contents($_SERVER['SCRIPT_FILENAME']."-ilog".$this->bot_id.".txt",date("d.m.Y H:i:s")." ".var_export($answer, TRUE)."  ÑÑ‚Ñ€Ð¾ÐºÐ° ".__LINE__." \r\n",FILE_APPEND | LOCK_EX);
             }
 
             preg_match_all('/^Set-Cookie:\s*([^;]*)/mi', $answer, $matches);
@@ -137,21 +137,21 @@ class CurlClass
 
             $response = substr($answer, $header_size);
 
-            //ïîñëåäíÿÿ ïîñåùåííàÿ èëè ïåðåàäðåñîâàííàÿ ñòðàíèöà èñïîëüçóåòñÿ êàê referer
+            //Ð¿Ð¾ÑÐ»ÐµÐ´Ð½ÑÑ Ð¿Ð¾ÑÐµÑ‰ÐµÐ½Ð½Ð°Ñ Ð¸Ð»Ð¸ Ð¿ÐµÑ€ÐµÐ°Ð´Ñ€ÐµÑÐ¾Ð²Ð°Ð½Ð½Ð°Ñ ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ð° Ð¸ÑÐ¿Ð¾Ð»ÑŒÐ·ÑƒÐµÑ‚ÑÑ ÐºÐ°Ðº referer
             $this->referer = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
 
             curl_close($ch);
 
             if($dump)
             {
-                file_put_contents("logCurl.txt",date("d.m.Y H:i:s")." ñòðîêà ".__LINE__.". ñòðîêà çàïðîñà: $url \r\n\r\n",FILE_APPEND | LOCK_EX);
-                if($this->referer != $url) file_put_contents("logCurl.txt",date("d.m.Y H:i:s")." ñòðîêà ".__LINE__.". ïåðåàäðåñîâàíî: ".$this->referer." \r\n\r\n",FILE_APPEND | LOCK_EX);
-                file_put_contents("logCurl.txt",date("d.m.Y H:i:s")." ñòðîêà ".__LINE__.var_export($http_response_header, TRUE)."\r\n",FILE_APPEND | LOCK_EX);
-                file_put_contents("logCurl.txt",date("d.m.Y H:i:s")." ñòðîêà ".__LINE__.var_export($post_data, TRUE)."\r\n",FILE_APPEND | LOCK_EX);
-                file_put_contents("logCurl.txt",date("d.m.Y H:i:s")." ñòðîêà ".__LINE__.var_export($start_coockies, TRUE)."\r\n",FILE_APPEND | LOCK_EX);
-                file_put_contents("logCurl.txt",date("d.m.Y H:i:s")." ñòðîêà ".__LINE__." ðàçìåð çàãîëîâêà:$header_size-".$this->header_size." \r\n",FILE_APPEND | LOCK_EX);
-                file_put_contents("logCurl.txt",date("d.m.Y H:i:s")." ñòðîêà ".__LINE__.var_export($answer, TRUE)."\r\n",FILE_APPEND | LOCK_EX);
-                file_put_contents("logCurl.txt",date("d.m.Y H:i:s")." ñòðîêà ".__LINE__.var_export($this->cookies_arr, TRUE)."\r\n",FILE_APPEND | LOCK_EX);
+                file_put_contents("logCurl.txt",date("d.m.Y H:i:s")." ÑÑ‚Ñ€Ð¾ÐºÐ° ".__LINE__.". ÑÑ‚Ñ€Ð¾ÐºÐ° Ð·Ð°Ð¿Ñ€Ð¾ÑÐ°: $url \r\n\r\n",FILE_APPEND | LOCK_EX);
+                if($this->referer != $url) file_put_contents("logCurl.txt",date("d.m.Y H:i:s")." ÑÑ‚Ñ€Ð¾ÐºÐ° ".__LINE__.". Ð¿ÐµÑ€ÐµÐ°Ð´Ñ€ÐµÑÐ¾Ð²Ð°Ð½Ð¾: ".$this->referer." \r\n\r\n",FILE_APPEND | LOCK_EX);
+                file_put_contents("logCurl.txt",date("d.m.Y H:i:s")." ÑÑ‚Ñ€Ð¾ÐºÐ° ".__LINE__.var_export($http_response_header, TRUE)."\r\n",FILE_APPEND | LOCK_EX);
+                file_put_contents("logCurl.txt",date("d.m.Y H:i:s")." ÑÑ‚Ñ€Ð¾ÐºÐ° ".__LINE__.var_export($post_data, TRUE)."\r\n",FILE_APPEND | LOCK_EX);
+                file_put_contents("logCurl.txt",date("d.m.Y H:i:s")." ÑÑ‚Ñ€Ð¾ÐºÐ° ".__LINE__.var_export($start_coockies, TRUE)."\r\n",FILE_APPEND | LOCK_EX);
+                file_put_contents("logCurl.txt",date("d.m.Y H:i:s")." ÑÑ‚Ñ€Ð¾ÐºÐ° ".__LINE__." Ñ€Ð°Ð·Ð¼ÐµÑ€ Ð·Ð°Ð³Ð¾Ð»Ð¾Ð²ÐºÐ°:$header_size-".$this->header_size." \r\n",FILE_APPEND | LOCK_EX);
+                file_put_contents("logCurl.txt",date("d.m.Y H:i:s")." ÑÑ‚Ñ€Ð¾ÐºÐ° ".__LINE__.var_export($answer, TRUE)."\r\n",FILE_APPEND | LOCK_EX);
+                file_put_contents("logCurl.txt",date("d.m.Y H:i:s")." ÑÑ‚Ñ€Ð¾ÐºÐ° ".__LINE__.var_export($this->cookies_arr, TRUE)."\r\n",FILE_APPEND | LOCK_EX);
                 file_put_contents("logCurl.txt",date("d.m.Y H:i:s").". ======================================================================================================================================= \r\n\r\n",FILE_APPEND | LOCK_EX);
 
             }

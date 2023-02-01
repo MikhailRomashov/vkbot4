@@ -8,7 +8,7 @@ class GetFriends extends VK_functions_abstract implements VK_functions_interface
     public function doit(string $Method,array $RequestParam,array $PostData,array $CurlData,array $DebugOptions)
     {
 ///////////////////////
-// получаем  друзей
+// РїРѕР»СѓС‡Р°РµРј  РґСЂСѓР·РµР№
 ////////////////////////
 //function get_friends($offset=0,$online=false, $vk_id=0)
 
@@ -17,26 +17,26 @@ class GetFriends extends VK_functions_abstract implements VK_functions_interface
         $friends_short_link= array();
         $param='';
 
-        // параметры исользуется однократно, но возможно потребуется использовать чаще
+        // РїР°СЂР°РјРµС‚СЂС‹ РёСЃРѕР»СЊР·СѓРµС‚СЃСЏ РѕРґРЅРѕРєСЂР°С‚РЅРѕ, РЅРѕ РІРѕР·РјРѕР¶РЅРѕ РїРѕС‚СЂРµР±СѓРµС‚СЃСЏ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ С‡Р°С‰Рµ
         $online  =$RequestParam['online']   ?? false;
         $offset  =$RequestParam['offset']   ?? 0;
         $vk_id   =$RequestParam['vk_id']    ?? 0;
 
-        // праметры запроса
+        // РїСЂР°РјРµС‚СЂС‹ Р·Р°РїСЂРѕСЃР°
         if($vk_id)  $param .= "id=$vk_id&";
         if($offset) $param .= "offset=$offset&";
         if($online) $param .= "section=online&";
 
-        // удаляем концевой амперсанд
+        // СѓРґР°Р»СЏРµРј РєРѕРЅС†РµРІРѕР№ Р°РјРїРµСЂСЃР°РЅРґ
         $param=substr($param, 0, -1);
 
-        // открывем страницу со списком друзей
+        // РѕС‚РєСЂС‹РІРµРј СЃС‚СЂР°РЅРёС†Сѓ СЃРѕ СЃРїРёСЃРєРѕРј РґСЂСѓР·РµР№
         $html=$this->Call->httpCall('friends'.($param ? "?$param":""),$PostData, $CurlData, $DebugOptions);
         if($html['status'])
         {
 
 
-            // создаем массив vk_id
+            // СЃРѕР·РґР°РµРј РјР°СЃСЃРёРІ vk_id
             $friends = $this->Parser->parseStrAll($html['html'], 'si_owner" href="/','?mvk_entrypoint');
             if(!$friends['status'])
             {
@@ -45,7 +45,7 @@ class GetFriends extends VK_functions_abstract implements VK_functions_interface
             }
             else
             {
-                // разделяем на массивы short_link И vkid
+                // СЂР°Р·РґРµР»СЏРµРј РЅР° РјР°СЃСЃРёРІС‹ short_link Р vkid
                 while(count($friends[html])>0)
                 {
                     list($short_link ,$last_part)	=preg_split("\?from=friends",array_shift($friends[html]));
@@ -54,7 +54,7 @@ class GetFriends extends VK_functions_abstract implements VK_functions_interface
 
                     if(!$vkid)
                     {
-                        // выделем vk_id из $short_link если можно
+                        // РІС‹РґРµР»РµРј vk_id РёР· $short_link РµСЃР»Рё РјРѕР¶РЅРѕ
                         list($pref ,$maybevkid)	=preg_split("id",$short_link);
                         if(!$pref  && is_numeric($maybevkid)) $vkid=$maybevkid;
                     }

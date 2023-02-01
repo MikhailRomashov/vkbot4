@@ -8,7 +8,7 @@ class GetMessageUnreadAll extends VK_functions_abstract implements VK_functions_
     public function doit(string $Method,array $RequestParam,array $PostData,array $CurlData,array $DebugOptions)
     {
         ///////////////////////
-// получаем список непрочтианных сообщегий
+// РїРѕР»СѓС‡Р°РµРј СЃРїРёСЃРѕРє РЅРµРїСЂРѕС‡С‚РёР°РЅРЅС‹С… СЃРѕРѕР±С‰РµРіРёР№
 ////////////////////////
 /// function messages_get_all_unread()
 
@@ -19,7 +19,7 @@ class GetMessageUnreadAll extends VK_functions_abstract implements VK_functions_
         if($html[status])
         {
 
-            // находимнепрочитанные мессаги
+            // РЅР°С…РѕРґРёРјРЅРµРїСЂРѕС‡РёС‚Р°РЅРЅС‹Рµ РјРµСЃСЃР°РіРё
             $messages_out_link = $this->Parser->parseStrAll($html['html'], 'di_unread_inbox" href="/mail?act=show&','"');
 
             if(!$messages_out_link[status])

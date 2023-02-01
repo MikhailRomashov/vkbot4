@@ -8,44 +8,44 @@ class Friending extends VK_functions_abstract implements VK_functions_interface
     public function doit(string $Method,array $RequestParam,array $PostData,array $CurlData,array $DebugOptions)
     {
         ///////////////////////
-            // øëåì çàÿâêó â äðóçüÿ
+            // ÑˆÐ»ÐµÐ¼ Ð·Ð°ÑÐ²ÐºÑƒ Ð² Ð´Ñ€ÑƒÐ·ÑŒÑ
             ////////////////////////
             /// function friending($vk_id)
         global $VKfunc;
         $vk_id   =$RequestParam['vk_id']    ?? 0;
 
-        $this->Captcha->action++;
+        $this->GenFunc->Captcha->action++;
 
         //https://m.vk.com/friends?act=accept&id=17556568&from=profile&hash=60d59e6e50ac7a20bc
 
 
-        // çàéòè â ïðîôèëü þçåðà
+        // Ð·Ð°Ð¹Ñ‚Ð¸ Ð² Ð¿Ñ€Ð¾Ñ„Ð¸Ð»ÑŒ ÑŽÐ·ÐµÑ€Ð°
         $html=$VKfunc("GetProfile",'id'.$vk_id);
 
         if($html[status])
         {
-            // ñòðàíèöà ïðîôèëÿ óäà÷íî ïîëó÷åíà. ïàðñèì
-            // íàéòè ññûëêó íà äîáàâëåíèå â äðóçüÿ
+            // ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ð° Ð¿Ñ€Ð¾Ñ„Ð¸Ð»Ñ ÑƒÐ´Ð°Ñ‡Ð½Ð¾ Ð¿Ð¾Ð»ÑƒÑ‡ÐµÐ½Ð°. Ð¿Ð°Ñ€ÑÐ¸Ð¼
+            // Ð½Ð°Ð¹Ñ‚Ð¸ ÑÑÑ‹Ð»ÐºÑƒ Ð½Ð° Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ðµ Ð² Ð´Ñ€ÑƒÐ·ÑŒÑ
             //https://m.vk.com/friends?act=decline&id=17556568&from=profile&hash=725d0330fe9bdda04e
-            $add_friend_link = $this->Parser->parseStr($html['html'], '/friends?','"');
+            $add_friend_link = $this->GenFunc->Parser->parseStr($html['html'], '/friends?','"');
 
 
             if($add_friend_link[status]===true)
             {
 
-                // Ïðîâåðêà íà ñëó÷àé íåâåðíîãî ïàðñèíãà
+                // ÐŸÑ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð½Ð° ÑÐ»ÑƒÑ‡Ð°Ð¹ Ð½ÐµÐ²ÐµÑ€Ð½Ð¾Ð³Ð¾ Ð¿Ð°Ñ€ÑÐ¸Ð½Ð³Ð°
                 if(strlen($add_friend_link[html])>100)
                 {
-                    $this->Log->save("ErrParsing_",__LINE__," \r\n ðåçóëüòàò ïàðñèíãà þçåðà $vk_id:\r\n". $add_friend_link[html]. " \r\n ñòðàíèöà öåëèêîì :\r\n". $html['html']);
+                    $this->GenFunc->Log->save("ErrParsing_",__LINE__," \r\n Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚ Ð¿Ð°Ñ€ÑÐ¸Ð½Ð³Ð° ÑŽÐ·ÐµÑ€Ð° $vk_id:\r\n". $add_friend_link[html]. " \r\n ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ð° Ñ†ÐµÐ»Ð¸ÐºÐ¾Ð¼ :\r\n". $html['html']);
                     return array('status' => false ,'code' => 14, 'msg' => 'parsing_error') ;
                 }
 
-                // ïðîâåðÿåì áûëà ëè ïîñëàíà çàÿâêà ðàíåå
-                $add_friend_link_decline = $this->Parser->parseStr($add_friend_link[html], 'act=','&');
+                // Ð¿Ñ€Ð¾Ð²ÐµÑ€ÑÐµÐ¼ Ð±Ñ‹Ð»Ð° Ð»Ð¸ Ð¿Ð¾ÑÐ»Ð°Ð½Ð° Ð·Ð°ÑÐ²ÐºÐ° Ñ€Ð°Ð½ÐµÐµ
+                $add_friend_link_decline = $this->GenFunc->Parser->parseStr($add_friend_link[html], 'act=','&');
 
                 if($add_friend_link_decline[status]===true)
                 {
-                    //  ïàðñèíã ïðîøåë óäà÷íî
+                    //  Ð¿Ð°Ñ€ÑÐ¸Ð½Ð³ Ð¿Ñ€Ð¾ÑˆÐµÐ» ÑƒÐ´Ð°Ñ‡Ð½Ð¾
 
                     if($add_friend_link_decline[html]=='accept')
                     {
@@ -53,68 +53,68 @@ class Friending extends VK_functions_abstract implements VK_functions_interface
                         $captcha_id=0;
 
                         do {
-                            // ïîñëàòü çàïðîñ íà äîáàâëåíèÿ â äðóçüÿ
+                            // Ð¿Ð¾ÑÐ»Ð°Ñ‚ÑŒ Ð·Ð°Ð¿Ñ€Ð¾Ñ Ð½Ð° Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½Ð¸Ñ Ð² Ð´Ñ€ÑƒÐ·ÑŒÑ
                             $html=$this->Call->httpCall('friends?'.$add_friend_link[html], $PostData, $CurlData, $DebugOptions);
                             if (!$html[status]) return $html;
 
                             if($cap_zavis>0)
                             {
-                                // ÑÁÐÀÑÛÂÀÅì   ïðè ïîâòîðíîì çàïðîñê
-                                // äåëàåì ïðîâåðêó íà îøèáêó ðàñïîçíàâàíèÿ
+                                // Ð¡Ð‘Ð ÐÐ¡Ð«Ð’ÐÐ•Ð¼   Ð¿Ñ€Ð¸ Ð¿Ð¾Ð²Ñ‚Ð¾Ñ€Ð½Ð¾Ð¼ Ð·Ð°Ð¿Ñ€Ð¾ÑÐº
+                                // Ð´ÐµÐ»Ð°ÐµÐ¼ Ð¿Ñ€Ð¾Ð²ÐµÑ€ÐºÑƒ Ð½Ð° Ð¾ÑˆÐ¸Ð±ÐºÑƒ Ñ€Ð°ÑÐ¿Ð¾Ð·Ð½Ð°Ð²Ð°Ð½Ð¸Ñ
                                 $captcha_form[status] = false;
                                 $captcha_form[params][name][1] = '';
                                 $captcha_form[params][value][1] = '';
                             }
 
-                            // äåëàåì ïðîâåðêó íà êàï÷ó
-                            //  ðàçáèðàåì íà ôîðìû
-                            $captcha_form	= $this->Parser->getParamAll($html['html']);
+                            // Ð´ÐµÐ»Ð°ÐµÐ¼ Ð¿Ñ€Ð¾Ð²ÐµÑ€ÐºÑƒ Ð½Ð° ÐºÐ°Ð¿Ñ‡Ñƒ
+                            //  Ñ€Ð°Ð·Ð±Ð¸Ñ€Ð°ÐµÐ¼ Ð½Ð° Ñ„Ð¾Ñ€Ð¼Ñ‹
+                            $captcha_form	= $this->GenFunc->Parser->getParamAll($html['html']);
 
-                            // êàï÷à íå îáíàðóæåíà, óñïåøíûé ðåïîñò
+                            // ÐºÐ°Ð¿Ñ‡Ð° Ð½Ðµ Ð¾Ð±Ð½Ð°Ñ€ÑƒÐ¶ÐµÐ½Ð°, ÑƒÑÐ¿ÐµÑˆÐ½Ñ‹Ð¹ Ñ€ÐµÐ¿Ð¾ÑÑ‚
                             if(!$captcha_form[status])
                             {
-                                // åñëè ïåðåä ýòèì áûëà îáðàáîòàíà êàï÷à òî ó÷èòûâàåì ýòî
+                                // ÐµÑÐ»Ð¸ Ð¿ÐµÑ€ÐµÐ´ ÑÑ‚Ð¸Ð¼ Ð±Ñ‹Ð»Ð° Ð¾Ð±Ñ€Ð°Ð±Ð¾Ñ‚Ð°Ð½Ð° ÐºÐ°Ð¿Ñ‡Ð° Ñ‚Ð¾ ÑƒÑ‡Ð¸Ñ‚Ñ‹Ð²Ð°ÐµÐ¼ ÑÑ‚Ð¾
                                 if($cap_zavis)
                                 {
-                                    // ïðîâðÿåì ñèòóàöèþ êîãäà áîò ðàáîòàåò áåç òåëåôîíà ñ ïðîôèäå ñ ïîñòîÿííûìè êàï÷àìè
-                                    if($this->Captcha->TooMuchCaptchaReaction())
+                                    // Ð¿Ñ€Ð¾Ð²Ñ€ÑÐµÐ¼ ÑÐ¸Ñ‚ÑƒÐ°Ñ†Ð¸ÑŽ ÐºÐ¾Ð³Ð´Ð° Ð±Ð¾Ñ‚ Ñ€Ð°Ð±Ð¾Ñ‚Ð°ÐµÑ‚ Ð±ÐµÐ· Ñ‚ÐµÐ»ÐµÑ„Ð¾Ð½Ð° Ñ Ð¿Ñ€Ð¾Ñ„Ð¸Ð´Ðµ Ñ Ð¿Ð¾ÑÑ‚Ð¾ÑÐ½Ð½Ñ‹Ð¼Ð¸ ÐºÐ°Ð¿Ñ‡Ð°Ð¼Ð¸
+                                    if($this->GenFunc->Captcha->TooMuchCaptchaReaction())
                                     {
-                                        $this->Log->save("ChangePhone", __LINE__ ,". çàïðîñîâ êàï÷è:" . $this->Captcha->captcha . ". âûïîëíåíî ôóíêöèé " . $this->Captcha->action . " \r\n");
+                                        $this->GenFunc->Log->save("ChangePhone", __LINE__ ,". Ð·Ð°Ð¿Ñ€Ð¾ÑÐ¾Ð² ÐºÐ°Ð¿Ñ‡Ð¸:" . $this->GenFunc->Captcha->captcha . ". Ð²Ñ‹Ð¿Ð¾Ð»Ð½ÐµÐ½Ð¾ Ñ„ÑƒÐ½ÐºÑ†Ð¸Ð¹ " . $this->GenFunc->Captcha->action . " \r\n");
                                         return array('status' => false, 'code' => 3, 'msg' => "change_phone");
                                     }
                                 }
 
-                                // èíà÷å ñ÷èòàåì ðåïîñò óñïåøíûì
+                                // Ð¸Ð½Ð°Ñ‡Ðµ ÑÑ‡Ð¸Ñ‚Ð°ÐµÐ¼ Ñ€ÐµÐ¿Ð¾ÑÑ‚ ÑƒÑÐ¿ÐµÑˆÐ½Ñ‹Ð¼
                                 return array('status' => true, 'code' => 50, 'msg' => "success_repost");
                             }
 
 
-                            $this->Log->save("FrAdd5_",__LINE__," \r\n çàïðîñ ïðîôèëÿ þçåðà $vk_id :\r\n ñòðàíèöà öåëèêîì :\r\n". var_export($captcha_form,true));
+                            $this->GenFunc->Log->save("FrAdd5_",__LINE__," \r\n Ð·Ð°Ð¿Ñ€Ð¾Ñ Ð¿Ñ€Ð¾Ñ„Ð¸Ð»Ñ ÑŽÐ·ÐµÑ€Ð° $vk_id :\r\n ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ð° Ñ†ÐµÐ»Ð¸ÐºÐ¾Ð¼ :\r\n". var_export($captcha_form,true));
 
                             if ($captcha_form[params][name][1] == 'captcha_sid')
                             {
-                                // ïðè ïîâòîðíîì çàïðîñå êàï÷è
+                                // Ð¿Ñ€Ð¸ Ð¿Ð¾Ð²Ñ‚Ð¾Ñ€Ð½Ð¾Ð¼ Ð·Ð°Ð¿Ñ€Ð¾ÑÐµ ÐºÐ°Ð¿Ñ‡Ð¸
                                 if($cap_zavis>0)
                                 {
-                                    $this->Captcha->reportbad($captcha_id);
+                                    $this->GenFunc->Captcha->reportbad($captcha_id);
 
-                                    $this->Log->save("RepostCapErr", __LINE__, " îøèáêà ðàñïî÷íàíèÿ êàï÷è ïðè ðåïîñòå. Ôîðìà:\r\n" . var_export($captcha_form, true) . " \r\n postdata:\r\n" . var_export($postdata, true) . " \r\n");
+                                    $this->GenFunc->Log->save("RepostCapErr", __LINE__, " Ð¾ÑˆÐ¸Ð±ÐºÐ° Ñ€Ð°ÑÐ¿Ð¾Ñ‡Ð½Ð°Ð½Ð¸Ñ ÐºÐ°Ð¿Ñ‡Ð¸ Ð¿Ñ€Ð¸ Ñ€ÐµÐ¿Ð¾ÑÑ‚Ðµ. Ð¤Ð¾Ñ€Ð¼Ð°:\r\n" . var_export($captcha_form, true) . " \r\n postdata:\r\n" . var_export($postdata, true) . " \r\n");
 
 
                                 }
 
-                                // !!! ïðîâåðèòü ïðàâèëüíîñòü îðàáîòêè êàï÷è, ñðàâíèòü ñ êëàññîì repost
+                                // !!! Ð¿Ñ€Ð¾Ð²ÐµÑ€Ð¸Ñ‚ÑŒ Ð¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð¾ÑÑ‚ÑŒ Ð¾Ñ€Ð°Ð±Ð¾Ñ‚ÐºÐ¸ ÐºÐ°Ð¿Ñ‡Ð¸, ÑÑ€Ð°Ð²Ð½Ð¸Ñ‚ÑŒ Ñ ÐºÐ»Ð°ÑÑÐ¾Ð¼ repost
                                 $postdata[$captcha_form[params][name][0]]=$captcha_form[params][value][0];
 
-                                $res_cap = $this->Captcha->recognize('https://'.$this->Pref.self::$apiURL."/captcha.php?s=1&sid=".$captcha_form[params][value][0]);
+                                $res_cap = $this->GenFunc->Captcha->recognize('https://'.$this->Pref.self::$apiURL."/captcha.php?s=1&sid=".$captcha_form[params][value][0]);
                                 $captcha_key=$res_cap[0];
                                 $captcha_id=$res_cap[1];
                                 $cap_zavis++;
 
                                 if($captcha_key==false)
                                 {
-                                    // ñêîðåå âñåãî ïðîáëåìà ñ ïðîêñè. ñòàâèì ïðèçíàê
-                                    $this->Services->reboot(1); // ïåðåçàïóñê áîòà
+                                    // ÑÐºÐ¾Ñ€ÐµÐµ Ð²ÑÐµÐ³Ð¾ Ð¿Ñ€Ð¾Ð±Ð»ÐµÐ¼Ð° Ñ Ð¿Ñ€Ð¾ÐºÑÐ¸. ÑÑ‚Ð°Ð²Ð¸Ð¼ Ð¿Ñ€Ð¸Ð·Ð½Ð°Ðº
+                                    $this->GenFunc->Services->reboot(1); // Ð¿ÐµÑ€ÐµÐ·Ð°Ð¿ÑƒÑÐº Ð±Ð¾Ñ‚Ð°
                                 }
 
 
@@ -124,7 +124,7 @@ class Friending extends VK_functions_abstract implements VK_functions_interface
                                     $postdata[$captcha_form[params][name][1]]=$captcha_key;
                                 }
 
-                                $this->Log->save("CAPlogFrAdd",__LINE__," Êàï÷à ïðè çàÿâêå â äðóçüÿ. Ôîðìà:\r\n".var_export($captcha_form,true)." \r\n postdata:\r\n".var_export($postdata,true));
+                                $this->GenFunc->Log->save("CAPlogFrAdd",__LINE__," ÐšÐ°Ð¿Ñ‡Ð° Ð¿Ñ€Ð¸ Ð·Ð°ÑÐ²ÐºÐµ Ð² Ð´Ñ€ÑƒÐ·ÑŒÑ. Ð¤Ð¾Ñ€Ð¼Ð°:\r\n".var_export($captcha_form,true)." \r\n postdata:\r\n".var_export($postdata,true));
                             }
                             else
                             {
@@ -133,39 +133,39 @@ class Friending extends VK_functions_abstract implements VK_functions_interface
 
                                 if ($captcha_form[params][name][0] == 'phone')
                                 {
-                                    //ïðîâåðêà íà áëîêèðîâêè áîòà
+                                    //Ð¿Ñ€Ð¾Ð²ÐµÑ€ÐºÐ° Ð½Ð° Ð±Ð»Ð¾ÐºÐ¸Ñ€Ð¾Ð²ÐºÐ¸ Ð±Ð¾Ñ‚Ð°
                                     return array('status' => false, 'code' => 2, 'msg' => "login_error");
                                 }
                                 else
                                 {
-                                    // íåïîíÿòíàÿ ñèòóàöÿ, ëîãèðóåì
-                                    $this->Log->save("CAPlogRepost" , __LINE__," final_link $final_link \r\n" . var_export($postdata, true) . "\r\n" . var_export($captcha_form, true) . "\r\n" . var_export($html, true) . "\r\n");
+                                    // Ð½ÐµÐ¿Ð¾Ð½ÑÑ‚Ð½Ð°Ñ ÑÐ¸Ñ‚ÑƒÐ°Ñ†Ñ, Ð»Ð¾Ð³Ð¸Ñ€ÑƒÐµÐ¼
+                                    $this->GenFunc->Log->save("CAPlogRepost" , __LINE__," final_link $final_link \r\n" . var_export($postdata, true) . "\r\n" . var_export($captcha_form, true) . "\r\n" . var_export($html, true) . "\r\n");
                                     die;
                                 }
                             }
 
                         }while($cap_zavis<3);
 
-                        // ïðîèçîøëî çàâèñàíèå ïðè ðàñïîçíàâàíèè êàï÷è. óáèâàåì ñêðèïò áîòà
-                        $this->Log->save("FrAddCapErr", __LINE__, " çàâèñ ïðè ðàñïîçíàíèè êàï÷è cap_zavis=$cap_zavis \r\n");
+                        // Ð¿Ñ€Ð¾Ð¸Ð·Ð¾ÑˆÐ»Ð¾ Ð·Ð°Ð²Ð¸ÑÐ°Ð½Ð¸Ðµ Ð¿Ñ€Ð¸ Ñ€Ð°ÑÐ¿Ð¾Ð·Ð½Ð°Ð²Ð°Ð½Ð¸Ð¸ ÐºÐ°Ð¿Ñ‡Ð¸. ÑƒÐ±Ð¸Ð²Ð°ÐµÐ¼ ÑÐºÑ€Ð¸Ð¿Ñ‚ Ð±Ð¾Ñ‚Ð°
+                        $this->GenFunc->Log->save("FrAddCapErr", __LINE__, " Ð·Ð°Ð²Ð¸Ñ Ð¿Ñ€Ð¸ Ñ€Ð°ÑÐ¿Ð¾Ð·Ð½Ð°Ð½Ð¸Ð¸ ÐºÐ°Ð¿Ñ‡Ð¸ cap_zavis=$cap_zavis \r\n");
                         die;
 
                     }
                     elseif($add_friend_link_decline[html]=='decline')
                     {
-                        // çàÿâêà áûëà ïîñëàíà ðàíåå
+                        // Ð·Ð°ÑÐ²ÐºÐ° Ð±Ñ‹Ð»Ð° Ð¿Ð¾ÑÐ»Ð°Ð½Ð° Ñ€Ð°Ð½ÐµÐµ
                                         return array('status' => true ,'code' => 21, 'msg' => "already_friended") ;
                     }
                     else
                     {
-                        //÷òî òî íå òàê
-                        $this->Log->save("ErrParsing_$vk_id.txt",__LINE__," \r\n ðåçóëüòàò ïàðñèíãà :\r\n". $add_friend_link[html]. " \r\n ñòðàíèöà öåëèêîì :\r\n");
+                        //Ñ‡Ñ‚Ð¾ Ñ‚Ð¾ Ð½Ðµ Ñ‚Ð°Ðº
+                        $this->GenFunc->Log->save("ErrParsing_$vk_id.txt",__LINE__," \r\n Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚ Ð¿Ð°Ñ€ÑÐ¸Ð½Ð³Ð° :\r\n". $add_friend_link[html]. " \r\n ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ð° Ñ†ÐµÐ»Ð¸ÐºÐ¾Ð¼ :\r\n");
                         return array('status' => true ,'code' => 14, 'msg' => 'parsing_error') ;
                     }
                 }
                 else
                 {
-                    $this->Log->save("ErrParsing_$vk_id.txt",__LINE__," \r\n ðåçóëüòàò ïàðñèíãà :\r\n". $add_friend_link[html]. " \r\n ñòðàíèöà öåëèêîì :\r\n". $html['html']);
+                    $this->GenFunc->Log->save("ErrParsing_$vk_id.txt",__LINE__," \r\n Ñ€ÐµÐ·ÑƒÐ»ÑŒÑ‚Ð°Ñ‚ Ð¿Ð°Ñ€ÑÐ¸Ð½Ð³Ð° :\r\n". $add_friend_link[html]. " \r\n ÑÑ‚Ñ€Ð°Ð½Ð¸Ñ†Ð° Ñ†ÐµÐ»Ð¸ÐºÐ¾Ð¼ :\r\n". $html['html']);
 
                     return array('status' => true ,'code' => 10, 'msg' => "string_not_found") ;
                 }
@@ -174,7 +174,7 @@ class Friending extends VK_functions_abstract implements VK_functions_interface
             }
             else
             {
-                // çàïðàùèâàìàÿ ñòðàíèóà ëèáî óäàëåíà ëèáî þçåð íå äîïóñêàåò çàÿâîê â äðóçüÿ
+                // Ð·Ð°Ð¿Ñ€Ð°Ñ‰Ð¸Ð²Ð°Ð¼Ð°Ñ ÑÑ‚Ñ€Ð°Ð½Ð¸ÑƒÐ° Ð»Ð¸Ð±Ð¾ ÑƒÐ´Ð°Ð»ÐµÐ½Ð° Ð»Ð¸Ð±Ð¾ ÑŽÐ·ÐµÑ€ Ð½Ðµ Ð´Ð¾Ð¿ÑƒÑÐºÐ°ÐµÑ‚ Ð·Ð°ÑÐ²Ð¾Ðº Ð² Ð´Ñ€ÑƒÐ·ÑŒÑ
                 return array('status' => true ,'code' => 10, 'msg' => "string_not_found") ;
             }
         }

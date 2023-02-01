@@ -9,7 +9,7 @@ class GetProfile extends VK_functions_abstract implements VK_functions_interface
     {
         // TODO: Implement doit() method.
         ///////////////////////
-        // îòêğûâàåì çàäàíóş ñòğàíèöó
+        // Ğ¾Ñ‚ĞºÑ€Ñ‹Ğ²Ğ°ĞµĞ¼ Ğ·Ğ°Ğ´Ğ°Ğ½ÑƒÑ ÑÑ‚Ñ€Ğ°Ğ½Ğ¸Ñ†Ñƒ
         ////////////////////////
         ///https://m.vk.com/id$vk_id
         //call("$link", array('postdata'  => ''), array('ssl' => true, 'httpPrefix' =>$this->Pref, 'dump' => false));
